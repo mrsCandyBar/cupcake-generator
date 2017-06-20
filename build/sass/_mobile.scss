@@ -1,0 +1,7 @@
+@media (max-width: $windowWidthMin) {
+
+  /* Make menu list items fit full width */
+  .masthead-nav > li { display: block; }
+  .masthead-nav > li + li { margin: 0px; }
+
+}

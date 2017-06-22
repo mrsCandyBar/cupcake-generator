@@ -6,6 +6,7 @@ class generateCake {
   constructor(data) {
     this.description      = $('#description');
     this.menu             = $('#menu');
+    this.cake             = $('#cake');
     this.selectedCake     = 0;
     this.store            = data;
     this.store.index      = () => {
@@ -27,6 +28,7 @@ class generateCake {
   render() {
     this._generateCake('template/description.html', this.store.cakes[this.selectedCake], this.description);
     this._generateCake('template/menu.html', this.store, this.menu);
+    this._generateCake('template/cake.html', '', this.cake);
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -81,3 +83,7 @@ class generateCake {
 };
 
 let startApp = new generateCake(Data).init();
+
+$.get('getSVG.html', function (data) {
+  $('#SVG_holder').append(data);
+});

@@ -8,11 +8,17 @@ import webpack from 'webpack-stream';
 var paths = {
   scripts: 'build/js/*.js',
   sass: 'build/sass/*.scss',
+  templates: 'template/*.html',
   pages: '*.html',
 };
 
 gulp.task('pageReload', () => {
   return gulp.src(paths.pages)
+    .pipe(livereload());
+})
+
+gulp.task('templatesReload', () => {
+  return gulp.src(paths.templates)
     .pipe(livereload());
 })
 
@@ -29,6 +35,7 @@ gulp.task('watch', function() {
   gulp.watch(paths.scripts, ['webpacker']);
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.pages, ['pageReload']);
+  gulp.watch(paths.templates, ['pageReload']);
 });
  
 gulp.task('webpacker', function() {

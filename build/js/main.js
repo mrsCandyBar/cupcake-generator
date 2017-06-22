@@ -17,6 +17,9 @@ class generateCake {
           }
         }
       }
+
+    this.builder          = data.cupcakeBuilder;
+    this.cupcake          = data.cupcakeObj;
   }
 
   init() {
@@ -28,7 +31,30 @@ class generateCake {
   render() {
     this._generateCake('template/description.html', this.store.cakes[this.selectedCake], this.description);
     this._generateCake('template/menu.html', this.store, this.menu);
-    this._generateCake('template/cake.html', '', this.cake);
+
+    this._randomizeCupcake(this.builder, this.cupcake);
+    this._generateCake('template/cake.html', this.cupcake, this.cake);
+  }
+
+  _randomizeCupcake(builder, cupcake) {
+    for(let property in cupcake) {
+
+      console.log(' >>>', property, builder[property]);
+      let getValue = this._getRandomNumberBetween(0, builder[property].length - 1);
+      cupcake[property] = builder[property][getValue];
+      
+      if (property === 'icing_type') {
+        if (cupcake[property] === 'swirl') {
+          cupcake.type = 'tall';
+          cupcake.hasCream = '';
+        } else {
+          cupcake.type = 'short';
+          cupcake.hasWafer = '';
+        }
+      } 
+    }
+
+    console.log(' >>>', cupcake)
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -57,7 +83,10 @@ class generateCake {
     for (let noOfTries = 0; noOfTries < maxTries; noOfTries++) {
       randomNumber = Math.round(Math.random() * (numberMax - numberMin) + numberMin);
 
-      if (randomNumber != this.selectedCake) {
+      this.selectedCake = randomNumber;
+      return this.selectedCake;
+
+      /*if (randomNumber != this.selectedCake) {
         this.selectedCake = randomNumber;
         return this.selectedCake;
       } 
@@ -65,7 +94,7 @@ class generateCake {
       if (noOfTries === (maxTries - 1)) {
         this.selectedCake = this.selectedCake != 0 ? 0 : 1;
         return this.selectedCake;
-      } 
+      } */
     }
   }
 

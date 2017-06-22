@@ -19,10 +19,11 @@ $svg-colors: (
     navy-darker:        #283336,
     purple:             #D91B5C,
     black:              #000000,
-    chocolate:          #A07369,
+    chocolate:          #774F39,
     chocolate-darker:   #3C2415,
-    chocolate-lighter:  #774F39,
+    chocolate-lighter:  #A07369,
     strawberry:         #E08E79,
+    strawberry-lighter: #FBBE97,
     strawberry-darker:  #DC334C,
     vanilla:            #FACC5A,
     vanilla-darker:     #FBB040,
@@ -30,7 +31,7 @@ $svg-colors: (
     special-green:      #97C799,
     special-blue:       #B2DCC1,
     special-vanilla:    #FCF8C4,
-    strawberry-lighter: #FBBE97,
+    
 );
 
 @each $svg-color in $svg-colors {
@@ -74,4 +75,10 @@ $svg-colors: (
 .svg__holder--color, .svg__icing-darker {
   fill: black;
   opacity: 0.2;
+}
+
+#cake button {
+  position: fixed;
+  top: 50%;
+  right: 10%;
 }

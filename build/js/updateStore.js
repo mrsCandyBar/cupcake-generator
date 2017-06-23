@@ -7,6 +7,7 @@ class UpdateStore {
       cupcake : JSON.stringify(store.cupcake) 
     }
 
+    visibleCake.cupcake = JSON.parse(visibleCake.cupcake);
     store.cakes.push(visibleCake);
     return store;
   }
@@ -19,8 +20,8 @@ class UpdateStore {
       cake.status = (index === listIndex) ? 'active' : '';
     });
     
-    let getCake = JSON.parse(store.cakes[listIndex]['cupcake']);
-    store.cupcake = getCake;
+    let getCake = JSON.stringify(store.cakes[listIndex]['cupcake']);
+    store.cupcake = JSON.parse(getCake);
     return store;
   }
 

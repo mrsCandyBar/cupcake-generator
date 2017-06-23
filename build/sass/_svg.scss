@@ -49,10 +49,11 @@ $svg-colors: (
 .hidden { display: none; }
 
 #cake {
-  position: fixed;
-  top: 10%; left: 10%;
-  width: 80%;
-  height: calc(100% - 120px);
+  position: relative;
+  top: 10%;
+  width: 80vw;
+  margin: 0 auto;
+  height: calc(100vh - 80px);
   display: block;
 
   svg {
@@ -74,4 +75,10 @@ $svg-colors: (
 .svg__holder--color, .svg__icing-darker {
   fill: black;
   opacity: 0.2;
+}
+
+nav svg { 
+  width: 60px;
+  height: 60px;
+  display: block;
 }

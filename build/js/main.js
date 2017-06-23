@@ -36,8 +36,8 @@ class generateCake {
     this.$add.show();
     store.cakes.forEach(cake => {
       cake.status = '';
-
-      if (cake.cupcake === JSON.stringify(store.cupcake)) {
+      
+      if (JSON.stringify(cake.cupcake) === JSON.stringify(store.cupcake)) {
         this.$add.hide();
         cake.status = 'active';
       } 
@@ -54,7 +54,7 @@ class generateCake {
     });
 
     this.$favourites.delegate('button', 'click', (button) => {
-      if (!button.currentTarget.children.length > 0) {
+      if (button.currentTarget.children.length < 2) {
         Events.emit('select.cake.from.list', { store: store, index: button.currentTarget.dataset.index});
       }
     });

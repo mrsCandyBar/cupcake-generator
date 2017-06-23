@@ -26,7 +26,7 @@ class generateCake {
     for(let property in cupcake) {
       
       if (builder[property]) {
-        let getValue = this._getRandomNumberBetween(0, builder[property].length - 1);
+        let getValue = this._getRandomNumberBetween(builder[property]);
         cupcake[property] = builder[property][getValue];
         
         if (property === 'icing_type') {
@@ -122,28 +122,9 @@ class generateCake {
     }
   }
 
-  _getRandomNumberBetween(min, max) {
-    let randomNumber,
-      numberMin = min, 
-      numberMax = max,
-      maxTries = 3;
-
-    for (let noOfTries = 0; noOfTries < maxTries; noOfTries++) {
-      randomNumber = Math.round(Math.random() * (numberMax - numberMin) + numberMin);
-
-      this.selectedCake = randomNumber;
-      return this.selectedCake;
-
-      /*if (randomNumber != this.selectedCake) {
-        this.selectedCake = randomNumber;
-        return this.selectedCake;
-      } 
-
-      if (noOfTries === (maxTries - 1)) {
-        this.selectedCake = this.selectedCake != 0 ? 0 : 1;
-        return this.selectedCake;
-      } */
-    }
+  _getRandomNumberBetween(obj) {
+    let max = obj.length - 1;
+    return Math.round(Math.random() * (max - 0) + 0);;
   }
 
   bindStoreEvents(store) {

@@ -35,49 +35,6 @@ body {
   padding: 30px;
 }
 
-
-/*
- * Header
- */
-
-.masthead-brand {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.masthead-nav > li {
-  display: inline-block;
-}
-.masthead-nav > li + li {
-  margin-left: 20px;
-}
-.masthead-nav > li > a {
-  padding-right: 0;
-  padding-left: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: $colorPrimary; /* IE8 proofing */
-  color: rgba(255,255,255,.75);
-  border-bottom: 2px solid transparent;
-}
-.masthead-nav > li > a:hover,
-.masthead-nav > li > a:focus {
-  background-color: transparent;
-  border-bottom-color: #a9a9a9;
-  border-bottom-color: rgba(255,255,255,.25);
-}
-.masthead-nav > .active > a,
-.masthead-nav > .active > a:hover,
-.masthead-nav > .active > a:focus {
-  color: $colorPrimary;
-  border-bottom-color: $colorPrimary;
-}
-
-@media (min-width: 768px) {
-  .masthead-brand { float: left; }
-  .masthead-nav { float: right; }
-}
-
-
 /*
  * Cover
  */
@@ -96,8 +53,8 @@ body {
  */
 
 .mastfoot {
-  color: $colorSecondary; /* IE8 proofing */
-  color: rgba(255,255,255,.5);
+  color: #999;
+  text-shadow: none;
 }
 
 
@@ -116,14 +73,7 @@ body {
   }
 }
 
-@media (min-width: $windowWidthMin) and (min-height: $windowHeightMin) {
-
-  /* Fix header and footer and top and bottom of page */
-  .masthead, .mastfoot { position: fixed; }
-  .masthead { top: 0; }
-  .mastfoot { bottom: 0; }
-
-}
+.mastfoot { position: fixed; bottom: 0; }
 
 sidebar { 
   text-align: left; 

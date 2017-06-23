@@ -55,7 +55,6 @@ class generateCake {
   _countCakes(cakes) {
     cakes.forEach((cake, index) => {
       cake.index = index;
-      console.log('cake >>>', cake);
     })
   }
 
@@ -79,12 +78,26 @@ class generateCake {
       this.render();
     });
 
-    this.menu.delegate('#remove', 'click', (button) => {
-      let getCake = JSON.stringify(this.cupcake);
-      this.cakes.push({ cupcake: getCake });
+    this.favourites.delegate('span', 'click', (button) => {
+      let getCake = button.currentTarget.parentElement.dataset.index;
+      this.cakes.splice(getCake, 1);
 
-      this.added = true;
-      this.render();
+      if (this.cakes.length > 0) {
+        if (this.cakes[getCake]) {
+          getCake = this.cakes[getCake]['cupcake'];
+        } else {
+          getCake = this.cakes[getCake - 1]['cupcake']
+        }
+        getCake = JSON.parse(getCake);
+        this.cupcake = getCake;
+        this.render();
+      }
+      else {
+        this.added = false;
+        this._randomizeCupcake(this.builder, this.cupcake);
+      } 
+
+      return false;
     });
 
     this.favourites.delegate('button', 'click', (button) => {

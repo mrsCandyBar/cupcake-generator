@@ -1,11 +1,9 @@
 <nav>
-    <ul id="currentCakes" class="nav">
-    	{{ #cakes }}
-    		<li>
-    		 	<button class="btn {{ status }}" data-index="{{ index }}">{{ type }}</button>
-    		</li>
-    	{{ /cakes }}
-    </ul>
+	<div class="btn-group-vertical" role="group">
+		<button class="btn btn-primary" id="randomize">Random</button>
 
-    <button class="btn btn-primary">Random</button>
+	    <ul id="currentCakes" class="nav"></ul>
+
+	    <button class="btn btn-primary" id="add">Add</button>
+    </div>
 </nav>

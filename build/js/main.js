@@ -6,8 +6,9 @@ class generateCake {
   constructor(data) {
     this.description      = $('#description');
     this.menu             = $('#menu');
+    this.favourites       = $('#currentCakes');
     this.cake             = $('#cake');
-    /*this.selectedCake     = 0;*/
+    this.added            = false
     this.store            = data;
     /*this.store.index      = () => {
         let current = this;
@@ -48,12 +49,14 @@ class generateCake {
       }
     }
 
+    this.added = false;
     this.render();
   }
 
   render() {
-    this._generateCake('template/menu.html', this.cakes, this.menu);
+    this._generateCake('template/favourites.html', this.store, this.favourites);
     this._generateCake('template/cake.html', this.cupcake, this.cake);
+    this._checkVisibility();
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -64,8 +67,17 @@ class generateCake {
   }
 
   bindUIevents() {
-    this.menu.delegate('button', 'click', (button) => {
+    this.menu.delegate('#randomize', 'click', (button) => {
       this._randomizeCupcake(this.builder, this.cupcake);
+    });
+
+    this.menu.delegate('#add', 'click', (button) => {
+      let getCake = JSON.stringify(this.cupcake);
+      getCake = JSON.parse(getCake);
+      this.cakes.push(getCake);
+
+      this.added = true;
+      this.render();
     });
 
     /*this.menu.delegate('button', 'click', (button) => {
@@ -76,6 +88,14 @@ class generateCake {
       this.render(button.currentTarget.dataset);
     });*/
   };
+
+  _checkVisibility() {
+    if (this.added === true) {
+      $('#add').hide();
+    } else {
+      $('#add').show();
+    }
+  }
 
   _getRandomNumberBetween(min, max) {
     let randomNumber,

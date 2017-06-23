@@ -2,12 +2,10 @@
 class RandomizeCupcake {
 
   createRandomCupcake(store) {
-    if (store.cupcake && store.builder) {
-      for(let property in store.cupcake) {
-        if (store.builder[property]) {
-          let index = _getRandomNumberBetween(store.builder[property]);
-          store.cupcake[property] = store.builder[property][index];
-        }
+    if (store.builder) {
+      for(let property in store.builder) {
+        let index = _getRandomNumberBetween(store.builder[property]);
+        store.cupcake[property] = store.builder[property][index];
       }
 
       _isCupcakeTall(store.cupcake);

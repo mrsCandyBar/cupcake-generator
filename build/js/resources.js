@@ -2,20 +2,7 @@
 let Data = {
 
   cakes: [],
-
-  cupcake: {
-    flavour: '',
-    hasWafer: '',
-    hasCream: '',
-    holder_type: '',
-    holder_colour: '',
-    icing_type: '',
-    icing_colour: '',
-    sprinkles_type: '',
-    sprinkles_colour: '',
-    topping: ''
-  },
-
+  cupcake: {},
   builder: {
     flavour: [ 
       "vanilla", 

@@ -1,35 +1,51 @@
 
 class UpdateStore {
 
-  addCakeToList() {
+  addCakeToList(store) {
     let visibleCake = { 
-      index   : this.store.cakes.length,
-      cupcake : JSON.stringify(this.store.cupcake) 
+      index   : store.cakes.length,
+      cupcake : JSON.stringify(store.cupcake) 
     }
 
-    this.store.cakes.push(visibleCake);
-    this.render();
+    store.cakes.push(visibleCake);
+    return store;
   }
 
-  removeCakeFromList(listIndex) {
-    this.store.cakes.splice(listIndex, 1);
+  showCakeFromList(obj) {
+    let store = obj.store;
+    let listIndex = obj.index;
 
-    if (this.store.cakes.length > 0) { 
-      this.store.cakes.forEach((cake, index) => {
-        cake.index = index;
-      });
-      this._showNextCakeInList(listIndex);
-    } else { 
-      this.randomizeCupcake(this.store); 
-    }
+    store.cakes.forEach((cake, index) => {
+      cake.status = (index === listIndex) ? 'active' : '';
+    });
+    
+    let getCake = JSON.parse(store.cakes[listIndex]['cupcake']);
+    store.cupcake = getCake;
+    return store;
   }
 
-  showNextCakeInList(index) {
-    index = !this.store.cakes[index] ? index - 1 : index;
-    this._showCakeFromList(index)
-  }
+  removeCakeFromList(obj) {
+    let action = new Promise((resolve, reject) => {
+      let store = obj.store;
+      let listIndex = obj.index;
+      store.cakes.splice(listIndex, 1);
 
+      if (store.cakes.length > 0) { 
+        store.cakes.forEach((cake, index) => {
+          cake.index = index;
+        });
+
+        listIndex = !store.cakes[listIndex] ? listIndex - 1 : listIndex;
+        store = this.showCakeFromList({store: store, index: listIndex})
+        resolve(store);
+
+      } else { 
+        reject(store); 
+      }
+    });
+
+    return action;
+  }
 };
 
-let Update = new UpdateStore();
-module.exports = Update;
+module.exports = new UpdateStore();

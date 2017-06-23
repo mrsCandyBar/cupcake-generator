@@ -79,7 +79,18 @@ class generateCake {
       this.render();
     });
 
+    this.menu.delegate('#remove', 'click', (button) => {
+      let getCake = JSON.stringify(this.cupcake);
+      this.cakes.push({ cupcake: getCake });
+
+      this.added = true;
+      this.render();
+    });
+
     this.favourites.delegate('button', 'click', (button) => {
+      this.cakes.forEach((cake, index) => {
+        cake.status = (index == button.currentTarget.dataset.index) ? 'active' : '';
+      });
       let getCake = JSON.parse(this.cakes[button.currentTarget.dataset.index]['cupcake']);
       this.cupcake = getCake;
       this.added = true;
@@ -91,6 +102,9 @@ class generateCake {
     if (this.added === true) {
       $('#add').hide();
     } else {
+      this.cakes.forEach((cake, index) => {
+        cake.status = '';
+      });
       $('#add').show();
     }
   }

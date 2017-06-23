@@ -77,8 +77,41 @@ $svg-colors: (
   opacity: 0.2;
 }
 
-nav svg { 
-  width: 60px;
-  height: 60px;
-  display: block;
+.nav {
+  white-space: nowrap;
+  margin: 0 auto;
+  width: 100vw;
+  max-width: 900px;
+  max-height: calc(100vw / 3 + 25px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #222;
+
+  .btn {
+    padding: 0px;
+    border: none;
+    border-radius: 0px;
+    width: calc(100% / 3 - 3px);
+    height: calc(100% / 3 - 3px);
+    white-space: nowrap;
+    display: inline-block;
+    text-align: center;
+    background: none !important;
+    border: none !important;
+
+    svg { 
+      max-width: 300px;
+      max-height: 300px;
+    }
+  }
+}
+
+#randomize { 
+  position: fixed;
+  left: 10%; top: 10%;
+}
+
+#add { 
+  position: fixed;
+  right: 10%; top: 10%;
 }

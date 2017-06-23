@@ -17,45 +17,39 @@ class generateCake {
   }
 
   init() {
-    this._randomizeCupcake(this.builder, this.cupcake);
+    this.randomizeCupcake(this.store);
     this.bindUIevents();
     /*this.bindStoreEvents(this.store);*/
   }
 
-  _randomizeCupcake(builder, cupcake) {
-    for(let property in cupcake) {
-      
-      if (builder[property]) {
-        let getValue = this._getRandomNumberBetween(builder[property]);
-        cupcake[property] = builder[property][getValue];
-        
-        if (property === 'icing_type') {
-          if (cupcake[property] === 'swirl') {
-            cupcake.type = 'tall';
-            cupcake.hasCream = '';
-          } else {
-            cupcake.type = 'short';
-            cupcake.hasWafer = '';
-          }
-        } 
+  randomizeCupcake(store) {
+    if (store.cupcake && store.builder) {
+      for(let property in store.cupcake) {
+        if (store.builder[property]) {
+          let index = this._getRandomNumberBetween(store.builder[property]);
+          store.cupcake[property] = store.builder[property][index];
+        }
       }
-    }
 
-    this.added = false;
-    this.render();
+      this._isCupcakeTall(store.cupcake);
+      this.render();
+    }
+  }
+
+  _getRandomNumberBetween(obj) {
+    return Math.round(Math.random() * (obj.length - 1));
+  }
+
+  _isCupcakeTall(cupcake) {
+    console.log('woot 2');
+    cupcake.type  = cupcake['icing_type'] === 'swirl' ? 'tall' : 'short';
+    cupcake       = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
   }
 
   render() {
-    this._countCakes(this.cakes);
     this._generateCake('template/favourites.html', this.store, this.favourites);
     this._generateCake('template/cake.html', this.cupcake, this.cake);
     this._checkVisibility();
-  }
-
-  _countCakes(cakes) {
-    cakes.forEach((cake, index) => {
-      cake.index = index;
-    })
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -67,10 +61,11 @@ class generateCake {
 
   bindUIevents() {
     this.menu.delegate('#randomize', 'click', (button) => {
-      this._randomizeCupcake(this.builder, this.cupcake);
+      this.randomizeCupcake(this.store);
     });
 
     this.menu.delegate('#add', 'click', (button) => {
+      this.cupcake.index = this.store.cakes.length - 1;
       let getCake = JSON.stringify(this.cupcake);
       this.cakes.push({ cupcake: getCake });
 
@@ -94,7 +89,7 @@ class generateCake {
       }
       else {
         this.added = false;
-        this._randomizeCupcake(this.builder, this.cupcake);
+        this.randomizeCupcake(this.store);
       } 
 
       return false;
@@ -122,12 +117,9 @@ class generateCake {
     }
   }
 
-  _getRandomNumberBetween(obj) {
-    let max = obj.length - 1;
-    return Math.round(Math.random() * (max - 0) + 0);;
-  }
+  
 
-  bindStoreEvents(store) {
+  /*bindStoreEvents(store) {
     Events.on('store.update.selected.cake', (selectedCake) => {
       this._setCakeAsSelected(store.cakes, selectedCake);
     });
@@ -137,11 +129,10 @@ class generateCake {
     cakes.forEach((cake, index) => {
       cake.status = (index != this.selectedCake) ? '' : 'btn-primary';
     });
-  }
+  }*/
 };
 
 let startApp = new generateCake(Data).init();
-
 $.get('getSVG.html', function (data) {
   $('#SVG_holder').append(data);
 });

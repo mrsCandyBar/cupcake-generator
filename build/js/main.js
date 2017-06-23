@@ -9,19 +9,11 @@ class generateCake {
     this.favourites       = $('#currentCakes');
     this.cake             = $('#cake');
     this.added            = false
-    this.store            = data;
-    /*this.store.index      = () => {
-        let current = this;
-        for (let cake = 0; cake < this.store.cakes.length; cake++) {
-          if (this.store.cakes[cake].type === current.type) {
-            return cake;
-          }
-        }
-      }*/
 
-    this.cakes            = this.store.cakes;
+    this.store            = data;
     this.builder          = this.store.builder;
     this.cupcake          = this.store.cupcake;
+    this.cakes            = this.store.cakes;
   }
 
   init() {
@@ -54,9 +46,17 @@ class generateCake {
   }
 
   render() {
+    this._countCakes(this.cakes);
     this._generateCake('template/favourites.html', this.store, this.favourites);
     this._generateCake('template/cake.html', this.cupcake, this.cake);
     this._checkVisibility();
+  }
+
+  _countCakes(cakes) {
+    cakes.forEach((cake, index) => {
+      cake.index = index;
+      console.log('cake >>>', cake);
+    })
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -73,20 +73,18 @@ class generateCake {
 
     this.menu.delegate('#add', 'click', (button) => {
       let getCake = JSON.stringify(this.cupcake);
-      getCake = JSON.parse(getCake);
-      this.cakes.push(getCake);
+      this.cakes.push({ cupcake: getCake });
 
       this.added = true;
       this.render();
     });
 
-    /*this.menu.delegate('button', 'click', (button) => {
-
-      this.selectedCake = button.currentTarget.dataset.index ? button.currentTarget.dataset.index : this._getRandomNumberBetween(0,2);
-      Events.emit('store.update.selected.cake', this.selectedCake);
-
-      this.render(button.currentTarget.dataset);
-    });*/
+    this.favourites.delegate('button', 'click', (button) => {
+      let getCake = JSON.parse(this.cakes[button.currentTarget.dataset.index]['cupcake']);
+      this.cupcake = getCake;
+      this.added = true;
+      this.render();
+    });
   };
 
   _checkVisibility() {

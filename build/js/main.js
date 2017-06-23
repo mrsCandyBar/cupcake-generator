@@ -1,5 +1,7 @@
 import Events from './pubsub.js';
 import Data from './resources.js';
+import Update from './updateStore.js';
+import RandomCupcake from './randomize.js';
 
 class generateCake {
 
@@ -11,38 +13,15 @@ class generateCake {
   }
 
   init() {
-    this.randomizeCupcake(this.store);
+    this.bindStoreEvents(this.store);
     this.bindUIevents();
-    /*this.bindStoreEvents(this.store);*/
+    Events.emit('create.random.cake', this.store);
   }
 
-  randomizeCupcake(store) {
-    if (store.cupcake && store.builder) {
-      for(let property in store.cupcake) {
-        if (store.builder[property]) {
-          let index = this._getRandomNumberBetween(store.builder[property]);
-          store.cupcake[property] = store.builder[property][index];
-        }
-      }
-
-      this._isCupcakeTall(store.cupcake);
-      this.render();
-    }
-  }
-
-  _getRandomNumberBetween(obj) {
-    return Math.round(Math.random() * (obj.length - 1));
-  }
-
-  _isCupcakeTall(cupcake) {
-    cupcake.type = cupcake['icing_type'] === 'swirl' ? 'tall' : 'short';
-    cupcake = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
-  }
-
-  render() {
-    this._generateCake('template/favourites.html', this.store, this.$favourites);
-    this._generateCake('template/cake.html', this.store.cupcake, this.$cake);
-    this._checkIfCakeExists(this.store);
+  render(store) {
+    this._generateCake('template/favourites.html', store, this.$favourites);
+    this._generateCake('template/cake.html', store.cupcake, this.$cake);
+    this._checkIfCakeExists(store);
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -66,7 +45,7 @@ class generateCake {
 
   bindUIevents() {
     this.$menu.delegate('#randomize', 'click', (button) => {
-      this.randomizeCupcake(this.store);
+      Events.emit('create.random.cake', this.store);
     });
 
     this.$menu.delegate('#add', 'click', (button) => {
@@ -103,7 +82,7 @@ class generateCake {
       });
       this._showNextCakeInList(listIndex);
     } else { 
-      this.randomizeCupcake(this.store); 
+      Events.emit('create.random.cake', this.store);
     }
   }
 
@@ -122,19 +101,14 @@ class generateCake {
     this.render();
   }
 
-  
-
-  /*bindStoreEvents(store) {
-    Events.on('store.update.selected.cake', (selectedCake) => {
-      this._setCakeAsSelected(store.cakes, selectedCake);
+  bindStoreEvents(store) {
+    Events.on('create.random.cake', (store) => {
+      this.render(RandomCupcake.createRandomCupcake(store));
+    });
+    Events.on('store.update.cake', (store) => {
+      this._setCakeAsSelected(store);
     });
   }
-
-  _setCakeAsSelected(cakes, selectedCake) {
-    cakes.forEach((cake, index) => {
-      cake.status = (index != this.selectedCake) ? '' : 'btn-primary';
-    });
-  }*/
 };
 
 let startApp = new generateCake(Data).init();

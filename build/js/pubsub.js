@@ -30,5 +30,4 @@ class EventsFired {
   };
 };
 
-let Events = new EventsFired();
-module.exports = Events;
+module.exports = new EventsFired();

@@ -4,16 +4,10 @@ import Data from './resources.js';
 class generateCake {
 
   constructor(data) {
-    this.description      = $('#description');
-    this.menu             = $('#menu');
-    this.favourites       = $('#currentCakes');
-    this.cake             = $('#cake');
-    this.added            = false
-
+    this.$favourites       = $('#currentCakes');
+    this.$cake             = $('#cake');
+    this.$menu             = $('#menu');
     this.store            = data;
-    this.builder          = this.store.builder;
-    this.cupcake          = this.store.cupcake;
-    this.cakes            = this.store.cakes;
   }
 
   init() {
@@ -41,15 +35,14 @@ class generateCake {
   }
 
   _isCupcakeTall(cupcake) {
-    console.log('woot 2');
-    cupcake.type  = cupcake['icing_type'] === 'swirl' ? 'tall' : 'short';
-    cupcake       = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
+    cupcake.type = cupcake['icing_type'] === 'swirl' ? 'tall' : 'short';
+    cupcake = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
   }
 
   render() {
-    this._generateCake('template/favourites.html', this.store, this.favourites);
-    this._generateCake('template/cake.html', this.cupcake, this.cake);
-    this._checkVisibility();
+    this._generateCake('template/favourites.html', this.store, this.$favourites);
+    this._generateCake('template/cake.html', this.store.cupcake, this.$cake);
+    this._checkIfCakeExists(this.store);
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -59,62 +52,74 @@ class generateCake {
     });
   }
 
+  _checkIfCakeExists(store) {
+    $('#add').show();
+    store.cakes.forEach(cake => {
+      cake.status = '';
+
+      if (cake.cupcake === JSON.stringify(store.cupcake)) {
+        $('#add').hide();
+        cake.status = 'active';
+      } 
+    });
+  }
+
   bindUIevents() {
-    this.menu.delegate('#randomize', 'click', (button) => {
+    this.$menu.delegate('#randomize', 'click', (button) => {
       this.randomizeCupcake(this.store);
     });
 
-    this.menu.delegate('#add', 'click', (button) => {
-      this.cupcake.index = this.store.cakes.length - 1;
-      let getCake = JSON.stringify(this.cupcake);
-      this.cakes.push({ cupcake: getCake });
-
-      this.added = true;
-      this.render();
+    this.$menu.delegate('#add', 'click', (button) => {
+      this._addCakeToList();
     });
 
-    this.favourites.delegate('span', 'click', (button) => {
-      let getCake = button.currentTarget.parentElement.dataset.index;
-      this.cakes.splice(getCake, 1);
+    this.$favourites.delegate('span', 'click', (button) => {
+      this._removeCakeFromList(button.currentTarget.parentElement.dataset.index);
+    });
 
-      if (this.cakes.length > 0) {
-        if (this.cakes[getCake]) {
-          getCake = this.cakes[getCake]['cupcake'];
-        } else {
-          getCake = this.cakes[getCake - 1]['cupcake']
-        }
-        getCake = JSON.parse(getCake);
-        this.cupcake = getCake;
-        this.render();
+    this.$favourites.delegate('button', 'click', (button) => {
+      if (!button.currentTarget.children.length > 0) {
+        this._showCakeFromList(button.currentTarget.dataset.index);
       }
-      else {
-        this.added = false;
-        this.randomizeCupcake(this.store);
-      } 
-
-      return false;
-    });
-
-    this.favourites.delegate('button', 'click', (button) => {
-      this.cakes.forEach((cake, index) => {
-        cake.status = (index == button.currentTarget.dataset.index) ? 'active' : '';
-      });
-      let getCake = JSON.parse(this.cakes[button.currentTarget.dataset.index]['cupcake']);
-      this.cupcake = getCake;
-      this.added = true;
-      this.render();
     });
   };
 
-  _checkVisibility() {
-    if (this.added === true) {
-      $('#add').hide();
-    } else {
-      this.cakes.forEach((cake, index) => {
-        cake.status = '';
-      });
-      $('#add').show();
+  _addCakeToList() {
+    let visibleCake = { 
+      index   : this.store.cakes.length,
+      cupcake : JSON.stringify(this.store.cupcake) 
     }
+
+    this.store.cakes.push(visibleCake);
+    this.render();
+  }
+
+  _removeCakeFromList(listIndex) {
+    this.store.cakes.splice(listIndex, 1);
+
+    if (this.store.cakes.length > 0) { 
+      this.store.cakes.forEach((cake, index) => {
+        cake.index = index;
+      });
+      this._showNextCakeInList(listIndex);
+    } else { 
+      this.randomizeCupcake(this.store); 
+    }
+  }
+
+  _showNextCakeInList(index) {
+    index = !this.store.cakes[index] ? index - 1 : index;
+    this._showCakeFromList(index)
+  }
+
+  _showCakeFromList(listIndex) {
+    this.store.cakes.forEach((cake, index) => {
+      cake.status = (index === listIndex) ? 'active' : '';
+    });
+    
+    let getCake = JSON.parse(this.store.cakes[listIndex]['cupcake']);
+    this.store.cupcake = getCake;
+    this.render();
   }
 
   

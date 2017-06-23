@@ -4,56 +4,45 @@ import Data from './resources.js';
 class generateCake {
 
   constructor(data) {
-    this.description      = $('#description');
-    this.menu             = $('#menu');
-    this.cake             = $('#cake');
-    /*this.selectedCake     = 0;*/
+    this.$favourites       = $('#currentCakes');
+    this.$cake             = $('#cake');
+    this.$menu             = $('#menu');
     this.store            = data;
-    /*this.store.index      = () => {
-        let current = this;
-        for (let cake = 0; cake < this.store.cakes.length; cake++) {
-          if (this.store.cakes[cake].type === current.type) {
-            return cake;
-          }
-        }
-      }*/
-
-    this.cakes            = this.store.cakes;
-    this.builder          = this.store.builder;
-    this.cupcake          = this.store.cupcake;
   }
 
   init() {
-    this._randomizeCupcake(this.builder, this.cupcake);
+    this.randomizeCupcake(this.store);
     this.bindUIevents();
     /*this.bindStoreEvents(this.store);*/
   }
 
-  _randomizeCupcake(builder, cupcake) {
-    for(let property in cupcake) {
-      
-      if (builder[property]) {
-        let getValue = this._getRandomNumberBetween(0, builder[property].length - 1);
-        cupcake[property] = builder[property][getValue];
-        
-        if (property === 'icing_type') {
-          if (cupcake[property] === 'swirl') {
-            cupcake.type = 'tall';
-            cupcake.hasCream = '';
-          } else {
-            cupcake.type = 'short';
-            cupcake.hasWafer = '';
-          }
-        } 
+  randomizeCupcake(store) {
+    if (store.cupcake && store.builder) {
+      for(let property in store.cupcake) {
+        if (store.builder[property]) {
+          let index = this._getRandomNumberBetween(store.builder[property]);
+          store.cupcake[property] = store.builder[property][index];
+        }
       }
-    }
 
-    this.render();
+      this._isCupcakeTall(store.cupcake);
+      this.render();
+    }
+  }
+
+  _getRandomNumberBetween(obj) {
+    return Math.round(Math.random() * (obj.length - 1));
+  }
+
+  _isCupcakeTall(cupcake) {
+    cupcake.type = cupcake['icing_type'] === 'swirl' ? 'tall' : 'short';
+    cupcake = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
   }
 
   render() {
-    this._generateCake('template/menu.html', this.cakes, this.menu);
-    this._generateCake('template/cake.html', this.cupcake, this.cake);
+    this._generateCake('template/favourites.html', this.store, this.$favourites);
+    this._generateCake('template/cake.html', this.store.cupcake, this.$cake);
+    this._checkIfCakeExists(this.store);
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -63,45 +52,79 @@ class generateCake {
     });
   }
 
+  _checkIfCakeExists(store) {
+    $('#add').show();
+    store.cakes.forEach(cake => {
+      cake.status = '';
+
+      if (cake.cupcake === JSON.stringify(store.cupcake)) {
+        $('#add').hide();
+        cake.status = 'active';
+      } 
+    });
+  }
+
   bindUIevents() {
-    this.menu.delegate('button', 'click', (button) => {
-      this._randomizeCupcake(this.builder, this.cupcake);
+    this.$menu.delegate('#randomize', 'click', (button) => {
+      this.randomizeCupcake(this.store);
     });
 
-    /*this.menu.delegate('button', 'click', (button) => {
+    this.$menu.delegate('#add', 'click', (button) => {
+      this._addCakeToList();
+    });
 
-      this.selectedCake = button.currentTarget.dataset.index ? button.currentTarget.dataset.index : this._getRandomNumberBetween(0,2);
-      Events.emit('store.update.selected.cake', this.selectedCake);
+    this.$favourites.delegate('span', 'click', (button) => {
+      this._removeCakeFromList(button.currentTarget.parentElement.dataset.index);
+    });
 
-      this.render(button.currentTarget.dataset);
-    });*/
+    this.$favourites.delegate('button', 'click', (button) => {
+      if (!button.currentTarget.children.length > 0) {
+        this._showCakeFromList(button.currentTarget.dataset.index);
+      }
+    });
   };
 
-  _getRandomNumberBetween(min, max) {
-    let randomNumber,
-      numberMin = min, 
-      numberMax = max,
-      maxTries = 3;
+  _addCakeToList() {
+    let visibleCake = { 
+      index   : this.store.cakes.length,
+      cupcake : JSON.stringify(this.store.cupcake) 
+    }
 
-    for (let noOfTries = 0; noOfTries < maxTries; noOfTries++) {
-      randomNumber = Math.round(Math.random() * (numberMax - numberMin) + numberMin);
+    this.store.cakes.push(visibleCake);
+    this.render();
+  }
 
-      this.selectedCake = randomNumber;
-      return this.selectedCake;
+  _removeCakeFromList(listIndex) {
+    this.store.cakes.splice(listIndex, 1);
 
-      /*if (randomNumber != this.selectedCake) {
-        this.selectedCake = randomNumber;
-        return this.selectedCake;
-      } 
-
-      if (noOfTries === (maxTries - 1)) {
-        this.selectedCake = this.selectedCake != 0 ? 0 : 1;
-        return this.selectedCake;
-      } */
+    if (this.store.cakes.length > 0) { 
+      this.store.cakes.forEach((cake, index) => {
+        cake.index = index;
+      });
+      this._showNextCakeInList(listIndex);
+    } else { 
+      this.randomizeCupcake(this.store); 
     }
   }
 
-  bindStoreEvents(store) {
+  _showNextCakeInList(index) {
+    index = !this.store.cakes[index] ? index - 1 : index;
+    this._showCakeFromList(index)
+  }
+
+  _showCakeFromList(listIndex) {
+    this.store.cakes.forEach((cake, index) => {
+      cake.status = (index === listIndex) ? 'active' : '';
+    });
+    
+    let getCake = JSON.parse(this.store.cakes[listIndex]['cupcake']);
+    this.store.cupcake = getCake;
+    this.render();
+  }
+
+  
+
+  /*bindStoreEvents(store) {
     Events.on('store.update.selected.cake', (selectedCake) => {
       this._setCakeAsSelected(store.cakes, selectedCake);
     });
@@ -111,11 +134,10 @@ class generateCake {
     cakes.forEach((cake, index) => {
       cake.status = (index != this.selectedCake) ? '' : 'btn-primary';
     });
-  }
+  }*/
 };
 
 let startApp = new generateCake(Data).init();
-
 $.get('getSVG.html', function (data) {
   $('#SVG_holder').append(data);
 });

@@ -1,26 +1,22 @@
 
 let Data = {
 
-  cakes: [
-    {
-      type: "Chocolate",
-      ingredient: 'cocoa',            
-      taste: "chocolatey goodness",
-      status: 'btn-primary'
-    },
-    {
-      type: "Strawberry",
-      ingredient: 'strawberries',
-      taste: "berry berry nice"
-    },
-    {
-      type: "Butterscotch",
-      ingredient: 'caramel',
-      taste: "creamy caramel clouds"
-    },          
-  ],
+  cakes: [],
 
-  cupcakeBuilder: {
+  cupcake: {
+    flavour: '',
+    hasWafer: '',
+    hasCream: '',
+    holder_type: '',
+    holder_colour: '',
+    icing_type: '',
+    icing_colour: '',
+    sprinkles_type: '',
+    sprinkles_colour: '',
+    topping: ''
+  },
+
+  builder: {
     flavour: [ 
       "vanilla", 
       "caramel-darker", 
@@ -78,20 +74,6 @@ let Data = {
       "flower" 
     ]
   },
-
-  cupcakeObj: {
-    flavour: '',
-    hasWafer: '',
-    hasCream: '',
-    holder_type: '',
-    holder_colour: '',
-    icing_type: '',
-    icing_colour: '',
-    sprinkles_type: '',
-    sprinkles_colour: '',
-    topping: ''
-  }
-
 };
 
 module.exports = Data;

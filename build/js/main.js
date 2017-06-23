@@ -7,54 +7,53 @@ class generateCake {
     this.description      = $('#description');
     this.menu             = $('#menu');
     this.cake             = $('#cake');
-    this.selectedCake     = 0;
+    /*this.selectedCake     = 0;*/
     this.store            = data;
-    this.store.index      = () => {
+    /*this.store.index      = () => {
         let current = this;
         for (let cake = 0; cake < this.store.cakes.length; cake++) {
           if (this.store.cakes[cake].type === current.type) {
             return cake;
           }
         }
-      }
+      }*/
 
-    this.builder          = data.cupcakeBuilder;
-    this.cupcake          = data.cupcakeObj;
+    this.cakes            = this.store.cakes;
+    this.builder          = this.store.builder;
+    this.cupcake          = this.store.cupcake;
   }
 
   init() {
-    this.render();
-    this.bindUIevents();
-    this.bindStoreEvents(this.store);
-  }
-
-  render() {
-    this._generateCake('template/description.html', this.store.cakes[this.selectedCake], this.description);
-    this._generateCake('template/menu.html', this.store, this.menu);
-
     this._randomizeCupcake(this.builder, this.cupcake);
-    this._generateCake('template/cake.html', this.cupcake, this.cake);
+    this.bindUIevents();
+    /*this.bindStoreEvents(this.store);*/
   }
 
   _randomizeCupcake(builder, cupcake) {
     for(let property in cupcake) {
-
-      console.log(' >>>', property, builder[property]);
-      let getValue = this._getRandomNumberBetween(0, builder[property].length - 1);
-      cupcake[property] = builder[property][getValue];
       
-      if (property === 'icing_type') {
-        if (cupcake[property] === 'swirl') {
-          cupcake.type = 'tall';
-          cupcake.hasCream = '';
-        } else {
-          cupcake.type = 'short';
-          cupcake.hasWafer = '';
-        }
-      } 
+      if (builder[property]) {
+        let getValue = this._getRandomNumberBetween(0, builder[property].length - 1);
+        cupcake[property] = builder[property][getValue];
+        
+        if (property === 'icing_type') {
+          if (cupcake[property] === 'swirl') {
+            cupcake.type = 'tall';
+            cupcake.hasCream = '';
+          } else {
+            cupcake.type = 'short';
+            cupcake.hasWafer = '';
+          }
+        } 
+      }
     }
 
-    console.log(' >>>', cupcake)
+    this.render();
+  }
+
+  render() {
+    this._generateCake('template/menu.html', this.cakes, this.menu);
+    this._generateCake('template/cake.html', this.cupcake, this.cake);
   }
 
   _generateCake(templateUrl, getCake, destination) {
@@ -66,12 +65,16 @@ class generateCake {
 
   bindUIevents() {
     this.menu.delegate('button', 'click', (button) => {
+      this._randomizeCupcake(this.builder, this.cupcake);
+    });
+
+    /*this.menu.delegate('button', 'click', (button) => {
 
       this.selectedCake = button.currentTarget.dataset.index ? button.currentTarget.dataset.index : this._getRandomNumberBetween(0,2);
       Events.emit('store.update.selected.cake', this.selectedCake);
 
       this.render(button.currentTarget.dataset);
-    });
+    });*/
   };
 
   _getRandomNumberBetween(min, max) {

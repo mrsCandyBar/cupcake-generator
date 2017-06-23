@@ -54,7 +54,6 @@ $svg-colors: (
   width: 100%;
   height: 100%;
   display: block;
-  background: #333;
 
   svg {
     width: 100%;
@@ -75,10 +74,4 @@ $svg-colors: (
 .svg__holder--color, .svg__icing-darker {
   fill: black;
   opacity: 0.2;
-}
-
-#cake button {
-  position: fixed;
-  top: 50%;
-  right: 10%;
 }

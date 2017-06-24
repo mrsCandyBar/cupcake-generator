@@ -1,8 +1,59 @@
 
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ------ Reset ------ */
+
 html,
 body {
   height: 100%;
-  background-color: $BGprimary !important;
+  background-color: $BGprimary;
 }
 
 body {
@@ -10,8 +61,30 @@ body {
   text-align: center;
   display: table;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
 }
+
+body * {
+  font-size: 20px;
+  font-family: "Caveat";
+}
+
+img { vertical-align: middle; padding-left: 5px; }
+
+button { 
+  background: map-get($colors, red); 
+  color: map-get($colors, cream-darker); 
+  padding: 20px; 
+  border-radius: 100%; 
+  border: none
+}
+
+*::-moz-selection { backgorund: none; }
+*::selection { backgorund: none; }
+*:focus { outline: none; }
+.hidden { display: none; }
+
+/*--- End global styles ---*/
 
 .vertical_centering {
   display: table-cell;
@@ -19,24 +92,86 @@ body {
   text-align: center;
 }
 
+main {
+  height: 100vh;
+}
+
 .inner {
   padding: 5px 30px;
 }
 
+#controls {
+  display: block; 
+  position: absolute;
+  left: 0; right: 0;
+  top: 5vh;
+  margin: 0 auto;
+}
+
 sidebar { 
-  position: fixed !important;
+  position: fixed;
   display: table;
   height: 100%;
   top: 0px;
   left: 0px;
 
   nav { 
+    height: 100%;
     display: table-cell;
     vertical-align: middle;
+
+    .nav {
+      white-space: nowrap;
+      margin: 0 auto;
+      width: 100vw;
+      max-width: 900px;
+      max-height: calc(100vw / 3 + 25px);
+      overflow-x: auto;
+      overflow-y: hidden;
+      background: #222;
+
+      .btn {
+        padding: 0px;
+        border: none;
+        border-radius: 0px;
+        width: calc(100% / 3 - 3px);
+        height: calc(100% / 3 - 3px);
+        white-space: nowrap;
+        display: inline-block;
+        text-align: center;
+        background: none;
+        border: none;
+      }
+    }
   }
+}
+
+#cake {
+  position: relative;
+  top: 6vh;
+  width: 80vw;
+  margin: 0 auto 6vh;
+  height: calc(100vh - 80px);
+  display: block;
 }
 
 footer {
   color: #999;
   text-align: center;
+}
+
+
+@media screen and (min-aspect-ratio: 450/600) { 
+  #controls { 
+    width: calc((100vh - 80px) * (450/600));
+    height: calc(100vh - 80px);
+  }
+}
+
+@media screen and (max-aspect-ratio: 450/600) { 
+  #controls { 
+    width: 80vw;
+    height: calc(80vw / (450/600));
+    margin-top: calc(((100vh - 80px) - (80vw / (450/600))) / 2);
+  }
 }

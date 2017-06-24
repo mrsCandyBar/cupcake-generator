@@ -19,7 +19,7 @@ let Data = {
     ],
     holder_type: [
       "dotted", 
-      "striped" 
+      "striped"
     ],
     holder_colour: [ 
       "yellow", 
@@ -44,12 +44,14 @@ let Data = {
       "yellow", 
       "pink", 
       "brown", 
-      "green"
+      "green",
+      "svg__darker"
     ],
     sprinkles_type: [ 
       "salt", 
+      "salt_single", 
       "sprinkles", 
-      "sprinkles_single" 
+      "sprinkles_single",
     ],
     topping: [ 
       "cherry", 

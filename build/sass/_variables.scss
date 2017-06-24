@@ -1,17 +1,45 @@
-// Container dimensions after mobile
 
+// Main Colors
+$colors: (
+    white:              #FFFFFF,
+    cream:              #F1EBEE,
+    cream-darker:       #E4C9DC,
+    yellow:             #FFDE16,
+    yellow-lighter:     #FCBA63,
+    yellow-darker:      #EE9D25,
+    caramel:            #DBA369,
+    caramel-darker:     #CB884B,
+    brown:              #603813,
+    green:              #0B9444,
+    green-darker:       #8CC63F,
+    red:                #D02127,
+    red-lighter:        #E73439,
+    pink:               #D08D79,
+    pink-darker:        #DC715D,
+    navy:               #2C4044,
+    navy-lighter:       #B6B8BA,
+    navy-darker:        #283336,
+    purple:             #D91B5C,
+    black:              #000000,
+    chocolate:          #774F39,
+    chocolate-darker:   #3C2415,
+    chocolate-lighter:  #A07369,
+    strawberry:         #E08E79,
+    strawberry-lighter: #FBBE97,
+    strawberry-darker:  #DC334C,
+    vanilla:            #FACC5A,
+    vanilla-darker:     #FBB040,
+    vanilla-lighter:    #FCDCA2,
+    special-green:      #97C799,
+    special-blue:       #B2DCC1,
+    special-vanilla:    #FCF8C4,
+);
+
+// Container dimensions after mobile
 $containerWidthMax: 768px;
 $windowWidthMin: 320px;
 $windowHeightMin: 480px;
 
-
 // Backgrounds
-
 $BGprimary: #333;
 $BGsecondary: #000;
-
-
-// Font Color
- 
-$colorPrimary: #fff;
-$colorSecondary: #999;

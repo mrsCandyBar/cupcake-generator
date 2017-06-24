@@ -10,8 +10,7 @@
 
     <title>Dev : Simple base project with Task Runner, able to publish and subscribe to events</title>
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Bubbler+One|Caveat|Covered+By+Your+Grace|Homemade+Apple|Indie+Flower|Josefin+Sans|Pacifico|Patrick+Hand+SC|Permanent+Marker|Poiret+One|Quicksand|Rock+Salt|Shadows+Into+Light|Shadows+Into+Light+Two" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="assets/css/main.css" rel="stylesheet">
@@ -27,14 +26,25 @@
   
     <container class="vertical_centering">
 
-      <main class="inner" > 
+      <main> 
         <section id="cake"></section>
 
-        <sidebar id="menu">
+        <sidebar id="controls">
+          <button id="add">
+            <svg viewBox="0 0 450 600">
+              <use xlink:href="#svg_short_heart"></use>
+            </svg>
+          </button>
+          <button id="randomize">
+            <svg viewBox="0 0 450 600">
+              <use xlink:href="#svg_cake"></use>
+            </svg>
+          </button>
+        </sidebar>
+        
+        <sidebar id="menu" class="hidden">
           <nav>
-            <button class="btn btn-primary" id="randomize">Random</button>
             <div id="currentCakes" class="nav"></div>
-            <button class="btn btn-primary" id="add">Add</button>
           </nav>
         </sidebar>
 
@@ -51,7 +61,7 @@
     <script src="assets/js/mustache.js"></script>
     <script src="assets/js/main.js"></script>
 
+    <!-- SVG holder -->
     <div id="SVG_holder" class="hidden"></div>
-
   </body>
 </html>

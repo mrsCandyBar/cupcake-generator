@@ -8,7 +8,7 @@ class generateCake {
   constructor(data) {
     this.$favourites       = $('#currentCakes');
     this.$cake             = $('#cake');
-    this.$menu             = $('#menu');
+    this.$menu             = $('#controls');
     this.$add              = $('#add');
     this.store               = data;
   }

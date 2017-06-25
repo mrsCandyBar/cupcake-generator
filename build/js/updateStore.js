@@ -26,6 +26,22 @@ class UpdateStore {
     return store;
   }
 
+  updateCakeInList(store) {
+    console.log('store >>> inside', store)
+    if (!store.index == '') {
+
+      let visibleCake = JSON.stringify(store.cupcake);
+      let newIndex = parseFloat(store.index)
+
+      store.active = newIndex;
+      store.cakes[newIndex].cupcake = JSON.parse(visibleCake);
+      
+      console.log('store >>> inside 2', store)
+    } 
+
+    return store;
+  }
+
   removeCakeFromList(store) {
     let listIndex = store.active;
 

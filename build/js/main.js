@@ -37,6 +37,7 @@ class generateCake {
     this.$remove.hide();
     this.$menu.show();
 
+    console.log('store >>>', store);
     if (store.cakes.length > 0) {
       store.cakes.forEach(cake => {
         cake.status = '';
@@ -54,6 +55,7 @@ class generateCake {
 
   bindUIevents(store) {
     this.$control.delegate('#randomize', 'click', (button) => {
+      store.index = '';
       Events.emit('create.random.cake', store);
     });
 
@@ -83,7 +85,7 @@ class generateCake {
     });
 
     this.$cake.delegate('#save', 'click', (button) => {
-      Events.emit('show.edited.cake', store);
+      Events.emit('update.current.cake', store);
     });
   };
 
@@ -113,10 +115,9 @@ class generateCake {
       },200);
     });
 
-    Events.on('show.edited.cake', (store) => {
-      store = createNewCupcake(store);
-      this._generateCake('template/cake.html', store, this.$cake);
-      
+    Events.on('update.current.cake', (store) => {
+      let updateStore = createNewCupcake(store);
+      this.render(Update.updateCakeInList(updateStore));
     });
   }
 };

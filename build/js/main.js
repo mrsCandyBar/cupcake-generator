@@ -73,10 +73,17 @@ class generateCake {
       Events.emit('edit.cake.from.list', store);
     });
 
-    this.$cake.delegate('button', 'click', (button) => {
-      console.log('click', button);
+    this.$cake.delegate('nav button', 'click', (button) => {
       store.index = button.currentTarget.dataset.index;
       Events.emit('select.cake.from.list', store);
+    });
+
+    this.$cake.delegate('#icing_type', 'change', (button) => {
+      toggleOptional(store.cupcake.type, button.currentTarget.id);
+    });
+
+    this.$cake.delegate('#save', 'click', (button) => {
+      Events.emit('show.edited.cake', store);
     });
   };
 
@@ -101,6 +108,11 @@ class generateCake {
     Events.on('edit.cake.from.list', (store) => {
       this._generateCake('template/edit.html', store.cupcake, this.$cake);
     });
+
+    Events.on('show.edited.cake', (store) => {
+      store = createNewCupcake(store);
+      this._generateCake('template/cake.html', store.cupcake, this.$cake);
+    });
   }
 };
 
@@ -108,3 +120,32 @@ let startApp = new generateCake(Data).init();
 $.get('getSVG.html', function (data) {
   $('#SVG_holder').append(data);
 });
+
+function toggleOptional(typeOfCupcake, icingType) {
+  if ($('#' + icingType).val() === 'swirl') {
+    $('#cream')
+      .hide()
+      .find('input').prop('checked', false);
+    $('#wafer').show();
+    typeOfCupcake = "tall";
+
+  } else {
+    $('#cream').show();
+    $('#wafer')
+      .hide()
+      .find('input').prop('checked', false);
+    typeOfCupcake = "short";
+  }
+}
+
+function createNewCupcake(store) {
+  for(let property in store.builder) {
+    if (document.getElementById(property).type && document.getElementById(property).type.indexOf('select') > -1) {
+      store.cupcake[property] = $('#' + property).val();
+    } else {
+      store.cupcake[property] = $('#' + property).find('input[type=checkbox]').prop('checked');
+    }
+  };
+
+  return store;
+}

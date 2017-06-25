@@ -21,7 +21,7 @@ class generateCake {
   }
 
   render(store) {
-    this._generateCake('template/cake.html', store.cupcake, this.$cake);
+    this._generateCake('template/cake.html', store, this.$cake);
     this._checkIfCakeExists(store);
   }
 
@@ -79,7 +79,7 @@ class generateCake {
     });
 
     this.$cake.delegate('#icing_type', 'change', (button) => {
-      toggleOptional(store.cupcake.type, button.currentTarget.id);
+      toggleOptional(store.cupcake.type);
     });
 
     this.$cake.delegate('#save', 'click', (button) => {
@@ -106,12 +106,17 @@ class generateCake {
     });
 
     Events.on('edit.cake.from.list', (store) => {
-      this._generateCake('template/edit.html', store.cupcake, this.$cake);
+      this._generateCake('template/edit.html', store, this.$cake);
+      setTimeout(() => {
+        removeDuplicateOptions();
+        toggleOptional(store.cupcake.type);
+      },200);
     });
 
     Events.on('show.edited.cake', (store) => {
       store = createNewCupcake(store);
-      this._generateCake('template/cake.html', store.cupcake, this.$cake);
+      this._generateCake('template/cake.html', store, this.$cake);
+      
     });
   }
 };
@@ -121,17 +126,17 @@ $.get('getSVG.html', function (data) {
   $('#SVG_holder').append(data);
 });
 
-function toggleOptional(typeOfCupcake, icingType) {
-  if ($('#' + icingType).val() === 'swirl') {
-    $('#cream')
+function toggleOptional(typeOfCupcake) {
+  if ($('#icing_type').val() === 'swirl') {
+    $('#hasCream')
       .hide()
       .find('input').prop('checked', false);
-    $('#wafer').show();
+    $('#hasWafer').show();
     typeOfCupcake = "tall";
 
   } else {
-    $('#cream').show();
-    $('#wafer')
+    $('#hasCream').show();
+    $('#hasWafer')
       .hide()
       .find('input').prop('checked', false);
     typeOfCupcake = "short";
@@ -148,4 +153,28 @@ function createNewCupcake(store) {
   };
 
   return store;
+}
+
+function removeDuplicateOptions() {
+    
+  $('#cake select').each(function(){
+    let selectBox = $(this);
+    
+    selectBox.find('option').each(function() {
+      let duplicate = 0;
+      let option = $(this);
+
+      selectBox.find('option').each(function() {
+        if ($(this).text() === option.text()) {
+          duplicate++;
+          $(this).attr('value',$(this).text());
+
+          if (duplicate === 2) {
+            option.remove();
+            $(this).prop('selected',true);
+          }
+        }
+      });
+    });
+  });
 }

@@ -4,81 +4,60 @@
 	<h2>Update Cupcake</h2>
   <br>
 
+  <!-- selected disabled -->
+
 	<select id="flavour">
-		<option selected disabled>Flavour</option>
-	  	<option value="vanilla">vanilla</option>
-      	<option value="caramel-darker">caramel-darker</option>
-      	<option value="chocolate-darker">chocolate-darker</option>
-    </select>
- 
-    <select id="holder_type">
-    	<option selected disabled>Holder</option>
-	  	<option value="dotted">dotted</option>
-      	<option value="striped">striped</option>
-    </select>
+		<option>{{ cupcake.flavour }}</option>
+    {{ #builder.flavour }}<option>{{ . }}</option>{{ /builder.flavour }}
+  </select>
 
-    <select id="holder_colour">
-    	<option selected disabled>Holder Colour</option>
-	  	<option value="yellow">yellow</option>
-      	<option value="red-lighter">red-lighter</option>
-      	<option value="purple">purple</option>
-      	<option value="green">green</option>
-      	<option value="navy">navy</option>
-    </select>
-    
-    ---
+  <select id="holder_type">
+    <option>{{ cupcake.holder_type }}</option>
+    {{ #builder.holder_type }}<option>{{ . }}</option>{{ /builder.holder_type }}
+  </select>
 
-    <select id="icing_type">
-    	<option selected disabled>Icing Type</option>
-	  	<option value="smooth">smooth</option>
-      	<option value="run">run</option>
-      	<option value="flared">flared</option>
-      	<option value="swirl">swirl</option>
-    </select>
+  <select id="holder_colour">
+    <option>{{ cupcake.holder_colour }}</option>
+    {{ #builder.holder_colour }}<option>{{ . }}</option>{{ /builder.holder_colour }}
+  </select>
+  
+  ---
 
-    <select id="icing_colour">
-    	<option selected disabled>Icing Colour</option>
-	  	<option value="special-vanilla">special-vanilla</option>
-      	<option value="red">red</option>
-      	<option value="special-blue">special-blue</option>
-      	<option value="brown">brown</option>
-    </select>
+  <select id="icing_type">
+  	<option>{{ cupcake.icing_type }}</option>
+    {{ #builder.icing_type }}<option>{{ . }}</option>{{ /builder.icing_type }}
+  </select>
 
-    <select id="sprinkles_type">
-    	<option selected disabled>Sprinkle Type</option>
-	  	<option value="salt">salt</option>
-      	<option value="salt_single">salt_single</option>
-      	<option value="sprinkles">sprinkles</option>
-      	<option value="sprinkles_single">sprinkles_single</option>
-    </select>
+  <select id="icing_colour">
+  	<option>{{ cupcake.icing_colour }}</option>
+    {{ #builder.icing_colour }}<option>{{ . }}</option>{{ /builder.icing_colour }}
+  </select>
 
-    <select id="sprinkles_colour">
-    	<option selected disabled>Sprinkle Colour</option>
-	  	<option value="yellow">yellow</option>
-      	<option value="pink">pink</option>
-      	<option value="brown">brown</option>
-      	<option value="green">green</option>
-      	<option value="svg__darker">darker than icing</option>
-    </select>
+  <select id="sprinkles_type">
+  	<option>{{ cupcake.sprinkles_type }}</option>
+    {{ #builder.sprinkles_type }}<option>{{ . }}</option>{{ /builder.sprinkles_type }}
+  </select>
 
-    --- <br>
+  <select id="sprinkles_colour">
+  	<option>{{ cupcake.sprinkles_colour }}</option>
+    {{ #builder.sprinkles_colour }}<option>{{ . }}</option>{{ /builder.sprinkles_colour }}
+  </select>
 
-    Optional :
-    <span id="hasWafer" style="display: none;"><input type="checkbox" name="wafer" value="true">Add Wafer</span>
-    <span id="hasCream"><input type="checkbox" name="cream" value="true">Add Cream</span>
+  --- <br>
 
+  Optional :
+  
+  <span id="hasWafer" style="display: none;">
+    <input type="checkbox" name="wafer" value="true" {{ #cupcake.hasWafer }}checked="true"{{ /cupcake.hasWafer }}>Add Wafer
+  </span>
+  
+  <span id="hasCream"><input type="checkbox" name="cream" value="true" {{ #cupcake.hasCream }}checked="true"{{ /cupcake.hasCream }}>Add Cream</span>
 
-    <select id="topping">
-    	<option selected disabled>Topping</option>
-	  	<option value="cherry">cherry</option>
-      	<option value="strawberry">strawberry</option>
-      	<option value="citrus">citrus</option>
-      	<option value="gumball">gumball</option>
-      	<option value="candle">candle</option>
-      	<option value="heart">heart</option>
-      	<option value="flower">flower</option>
-    </select>
+  <select id="topping">
+  	<option>{{ cupcake.topping }}</option>
+    {{ #builder.topping }}<option>{{ . }}</option>{{ /builder.topping }}
+  </select>
 
-    <br>
-    <button id="save">Save</button>
+  <br>
+  <button id="save">Save</button>
 </div>

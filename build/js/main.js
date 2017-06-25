@@ -6,11 +6,12 @@ import RandomCupcake from './randomize.js';
 class generateCake {
 
   constructor(data) {
-    this.$favourites       = $('#currentCakes');
     this.$cake             = $('#cake');
-    this.$menu             = $('#controls');
+    this.$control          = $('#controls');
     this.$add              = $('#add');
-    this.store               = data;
+    this.$remove           = $('#remove');
+    this.$menu             = $('#toggle_menu');
+    this.store             = data;
   }
 
   init() {
@@ -20,7 +21,6 @@ class generateCake {
   }
 
   render(store) {
-    this._generateCake('template/favourites.html', store, this.$favourites);
     this._generateCake('template/cake.html', store.cupcake, this.$cake);
     this._checkIfCakeExists(store);
   }
@@ -34,33 +34,49 @@ class generateCake {
 
   _checkIfCakeExists(store) {
     this.$add.show();
-    store.cakes.forEach(cake => {
-      cake.status = '';
-      
-      if (JSON.stringify(cake.cupcake) === JSON.stringify(store.cupcake)) {
-        this.$add.hide();
-        cake.status = 'active';
-      } 
-    });
+    this.$remove.hide();
+    this.$menu.show();
+
+    if (store.cakes.length > 0) {
+      store.cakes.forEach(cake => {
+        cake.status = '';
+        
+        if (JSON.stringify(cake.cupcake) === JSON.stringify(store.cupcake)) {
+          this.$add.hide();
+          this.$remove.show();
+          cake.status = 'active';
+        } 
+      });
+    } else {
+      this.$menu.hide();
+    }
   }
 
   bindUIevents(store) {
-    this.$menu.delegate('#randomize', 'click', (button) => {
+    this.$control.delegate('#randomize', 'click', (button) => {
       Events.emit('create.random.cake', store);
     });
 
-    this.$menu.delegate('#add', 'click', (button) => {
+    this.$control.delegate('#add', 'click', (button) => {
       Events.emit('add.random.cake', store);
     });
 
-    this.$favourites.delegate('button', 'click', (button) => {
-      if (button.currentTarget.children.length < 2) {
-        Events.emit('select.cake.from.list', { store: store, index: button.currentTarget.dataset.index});
-      }
+    this.$control.delegate('#remove', 'click', (button) => {
+      Events.emit('remove.cake.from.list', store);
     });
 
-    this.$favourites.delegate('span', 'click', (button) => {
-      Events.emit('remove.cake.from.list', { store: store, index: button.currentTarget.parentElement.dataset.index});
+    this.$control.delegate('#toggle_menu', 'click', (button) => {
+      this._generateCake('template/favourites.html', store, this.$cake);
+    });
+
+    this.$control.delegate('#edit', 'click', (button) => {
+      Events.emit('edit.cake.from.list', store);
+    });
+
+    this.$cake.delegate('button', 'click', (button) => {
+      console.log('click', button);
+      store.index = button.currentTarget.dataset.index;
+      Events.emit('select.cake.from.list', store);
     });
   };
 
@@ -78,8 +94,12 @@ class generateCake {
       Update.removeCakeFromList(store).then((updateStore) => {
         this.render(updateStore);
       }, (emptyStore) => {
-        this.render(RandomCupcake.createRandomCupcake(emptyStore));
+        Events.emit('create.random.cake', store);
       });
+    });
+
+    Events.on('edit.cake.from.list', (store) => {
+      this._generateCake('template/edit.html', store.cupcake, this.$cake);
     });
   }
 };

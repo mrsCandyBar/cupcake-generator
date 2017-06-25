@@ -74,9 +74,10 @@ img { vertical-align: middle; padding-left: 5px; }
 button { 
   background: map-get($colors, red); 
   color: map-get($colors, cream-darker); 
-  padding: 20px; 
-  border-radius: 100%; 
-  border: none
+  padding: 10px 20px; 
+  border-radius: 4px; 
+  border: none;
+  margin: 5px 1px; /* 0px 0px 10px -5px */
 }
 
 *::-moz-selection { backgorund: none; }
@@ -92,67 +93,43 @@ button {
   text-align: center;
 }
 
-main {
-  height: 100vh;
-}
-
 .inner {
   padding: 5px 30px;
 }
 
 #controls {
-  display: block; 
-  position: absolute;
-  left: 0; right: 0;
-  top: 5vh;
-  margin: 0 auto;
-}
-
-sidebar { 
   position: fixed;
-  display: table;
-  height: 100%;
   top: 0px;
   left: 0px;
-
-  nav { 
-    height: 100%;
-    display: table-cell;
-    vertical-align: middle;
-
-    .nav {
-      white-space: nowrap;
-      margin: 0 auto;
-      width: 100vw;
-      max-width: 900px;
-      max-height: calc(100vw / 3 + 25px);
-      overflow-x: auto;
-      overflow-y: hidden;
-      background: #222;
-
-      .btn {
-        padding: 0px;
-        border: none;
-        border-radius: 0px;
-        width: calc(100% / 3 - 3px);
-        height: calc(100% / 3 - 3px);
-        white-space: nowrap;
-        display: inline-block;
-        text-align: center;
-        background: none;
-        border: none;
-      }
-    }
-  }
 }
 
 #cake {
   position: relative;
-  top: 6vh;
-  width: 80vw;
-  margin: 0 auto 6vh;
-  height: calc(100vh - 80px);
-  display: block;
+  width: calc(100vw - 20px);
+  margin: 50px auto 0px;
+  overflow-x: hidden;
+  min-height: calc(100vh - 100px);
+  display: table;
+
+  > * {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+
+    .btn {
+      padding: 0px;
+      border: none;
+      border-radius: 0px;
+      width: calc(100vw / 3 - 10px);
+      height: calc(100vw / 3 - 10px);
+      float: left;
+      display: inline-block;
+      text-align: center;
+      background: none;
+      border: none;
+      position: relative;
+    }
+  }
 }
 
 footer {
@@ -161,7 +138,7 @@ footer {
 }
 
 
-@media screen and (min-aspect-ratio: 450/600) { 
+/* @media screen and (min-aspect-ratio: 450/600) { 
   #controls { 
     width: calc((100vh - 80px) * (450/600));
     height: calc(100vh - 80px);
@@ -174,4 +151,4 @@ footer {
     height: calc(80vw / (450/600));
     margin-top: calc(((100vh - 80px) - (80vw / (450/600))) / 2);
   }
-}
+} */

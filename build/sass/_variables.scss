@@ -43,3 +43,35 @@ $windowHeightMin: 480px;
 // Backgrounds
 $BGprimary: #333;
 $BGsecondary: #000;
+
+
+html,
+body {
+  background-color: $BGprimary;
+}
+
+body {
+  color: #999;
+  text-align: center;
+}
+
+body * {
+  font-size: 20px;
+  font-family: "Caveat";
+}
+
+img { vertical-align: middle; padding-left: 5px; }
+
+button { 
+  background: map-get($colors, red); 
+  color: map-get($colors, cream-darker); 
+  padding: 10px 20px; 
+  border-radius: 4px; 
+  border: none;
+  margin: 5px 1px; /* 0px 0px 10px -5px */
+}
+
+*::-moz-selection { background: none; }
+*::selection { background: none; }
+*:focus { outline: none; }
+.hidden { display: none; }

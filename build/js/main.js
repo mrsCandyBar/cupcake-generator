@@ -1,4 +1,3 @@
-import Events from  './_publishAndSubscribeToEvents.js';
 import Store from   './_store.js';
 import Update from  './_update.js';
 import Build from   './_build.js';

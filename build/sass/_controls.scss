@@ -1,0 +1,22 @@
+
+#controls {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+/* @media screen and (min-aspect-ratio: 450/600) { 
+  #controls { 
+    width: calc((100vh - 80px) * (450/600));
+    height: calc(100vh - 80px);
+  }
+}
+
+@media screen and (max-aspect-ratio: 450/600) { 
+  #controls { 
+    width: 80vw;
+    height: calc(80vw / (450/600));
+    margin-top: calc(((100vh - 80px) - (80vw / (450/600))) / 2);
+  }
+} */

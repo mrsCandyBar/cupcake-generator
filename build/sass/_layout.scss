@@ -1,130 +1,155 @@
 
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ------ Reset ------ */
+
 html,
 body {
   height: 100%;
-  background-color: $BGprimary !important;
-}
-body {
-  color: $colorPrimary;
-  text-align: center;
-  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  background-color: $BGprimary;
 }
 
-/* Extra markup and styles for table-esque vertical and horizontal centering */
-.site-wrapper {
+body {
+  color: #ccc;
+  text-align: center;
   display: table;
   width: 100%;
-  height: 100%; /* For at least Firefox */
-  min-height: 100%;
-  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-          box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+  height: 100%;
 }
-.site-wrapper-inner {
+
+body * {
+  font-size: 20px;
+  font-family: "Caveat";
+}
+
+img { vertical-align: middle; padding-left: 5px; }
+
+button { 
+  background: map-get($colors, red); 
+  color: map-get($colors, cream-darker); 
+  padding: 10px 20px; 
+  border-radius: 4px; 
+  border: none;
+  margin: 5px 1px; /* 0px 0px 10px -5px */
+}
+
+*::-moz-selection { backgorund: none; }
+*::selection { backgorund: none; }
+*:focus { outline: none; }
+.hidden { display: none; }
+
+/*--- End global styles ---*/
+
+.vertical_centering {
   display: table-cell;
   vertical-align: middle;
-}
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
-  left: 0;
-  right: 0;
+  text-align: center;
 }
 
-/* Padding for spacing */
 .inner {
-  padding: 30px;
+  padding: 5px 30px;
 }
 
-
-/*
- * Header
- */
-
-.masthead-brand {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.masthead-nav > li {
-  display: inline-block;
-}
-.masthead-nav > li + li {
-  margin-left: 20px;
-}
-.masthead-nav > li > a {
-  padding-right: 0;
-  padding-left: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: $colorPrimary; /* IE8 proofing */
-  color: rgba(255,255,255,.75);
-  border-bottom: 2px solid transparent;
-}
-.masthead-nav > li > a:hover,
-.masthead-nav > li > a:focus {
-  background-color: transparent;
-  border-bottom-color: #a9a9a9;
-  border-bottom-color: rgba(255,255,255,.25);
-}
-.masthead-nav > .active > a,
-.masthead-nav > .active > a:hover,
-.masthead-nav > .active > a:focus {
-  color: $colorPrimary;
-  border-bottom-color: $colorPrimary;
+#controls {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
 }
 
-@media (min-width: 768px) {
-  .masthead-brand { float: left; }
-  .masthead-nav { float: right; }
-}
+#cake {
+  position: relative;
+  width: calc(100vw - 20px);
+  margin: 50px auto 0px;
+  overflow-x: hidden;
+  min-height: calc(100vh - 100px);
+  display: table;
 
+  > * {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 
-/*
- * Cover
- */
-
-.cover {
-  padding: 0 20px;
-}
-.cover .btn-lg {
-  padding: 10px 20px;
-  font-weight: bold;
-}
-
-
-/*
- * Footer
- */
-
-.mastfoot {
-  color: $colorSecondary; /* IE8 proofing */
-  color: rgba(255,255,255,.5);
-}
-
-
-/*
- * Affix and center
- */
-
-@media (min-width: $containerWidthMax) {
-
-  /* Handle the widths */
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    max-width: $containerWidthMax;
-    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+    .btn {
+      padding: 0px;
+      border: none;
+      border-radius: 0px;
+      width: calc(100vw / 3 - 10px);
+      height: calc(100vw / 3 - 10px);
+      float: left;
+      display: inline-block;
+      text-align: center;
+      background: none;
+      border: none;
+      position: relative;
+    }
   }
 }
 
-@media (min-width: $windowWidthMin) and (min-height: $windowHeightMin) {
-
-  /* Fix header and footer and top and bottom of page */
-  .masthead, .mastfoot { position: fixed; }
-  .masthead { top: 0; }
-  .mastfoot { bottom: 0; }
-
+footer {
+  color: #999;
+  text-align: center;
 }
 
-sidebar { 
-  text-align: left; 
+
+/* @media screen and (min-aspect-ratio: 450/600) { 
+  #controls { 
+    width: calc((100vh - 80px) * (450/600));
+    height: calc(100vh - 80px);
+  }
 }
+
+@media screen and (max-aspect-ratio: 450/600) { 
+  #controls { 
+    width: 80vw;
+    height: calc(80vw / (450/600));
+    margin-top: calc(((100vh - 80px) - (80vw / (450/600))) / 2);
+  }
+} */

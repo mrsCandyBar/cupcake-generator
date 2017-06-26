@@ -1,68 +1,3 @@
-$svg-colors: (
-    white:              #FFFFFF,
-    cream:              #F1EBEE,
-    cream-darker:       #E4C9DC,
-    yellow:             #FFDE16,
-    yellow-lighter:     #FCBA63,
-    yellow-darker:      #EE9D25,
-    caramel:            #DBA369,
-    caramel-darker:     #CB884B,
-    brown:              #603813,
-    green:              #0B9444,
-    green-darker:       #8CC63F,
-    red:                #D02127,
-    red-lighter:        #E73439,
-    pink:               #D08D79,
-    pink-darker:        #DC715D,
-    navy:               #2C4044,
-    navy-lighter:       #B6B8BA,
-    navy-darker:        #283336,
-    purple:             #D91B5C,
-    black:              #000000,
-    chocolate:          #774F39,
-    chocolate-darker:   #3C2415,
-    chocolate-lighter:  #A07369,
-    strawberry:         #E08E79,
-    strawberry-lighter: #FBBE97,
-    strawberry-darker:  #DC334C,
-    vanilla:            #FACC5A,
-    vanilla-darker:     #FBB040,
-    vanilla-lighter:    #FCDCA2,
-    special-green:      #97C799,
-    special-blue:       #B2DCC1,
-    special-vanilla:    #FCF8C4,
-    
-);
-
-@each $svg-color in $svg-colors {
-  .svg__color--#{nth($svg-color, 1)} {
-    fill: nth($svg-color, 2);
-  }
-  /*.svg__color--light-#{nth($svg-color, 1)} {
-    fill: lighten(nth($svg-color, 2), 20);
-  }
-  .svg__color--dark-#{nth($svg-color, 1)} {
-    fill: darken(nth($svg-color, 2), 20);
-  }*/
-}
-
-.hidden { display: none; }
-
-#cake {
-  position: fixed;
-  top: 0px; left: 0px;
-  width: 100%;
-  height: 100%;
-  display: block;
-
-  svg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px; left: 0px;
-  }
-}
-
 .svg__base {
   stroke: none;
   stroke-width: 0px;
@@ -71,7 +6,34 @@ $svg-colors: (
   fill-rule: evenodd;
 }
 
-.svg__holder--color, .svg__icing-darker {
+.svg__holder--color, .svg__icing-darker, .svg__darker {
   fill: black;
   opacity: 0.2;
+}
+
+@each $svg-color in $colors {
+  .svg__color--#{nth($svg-color, 1)} {
+    fill: nth($svg-color, 2);
+  }
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+  }
+
+#cake {
+  svg {
+    position: absolute;
+    top: 0px; left: 0px;
+  }
+}
+
+.nav {
+  .btn {
+    svg { 
+      max-width: 300px;
+      max-height: 300px;
+    }
+  }
 }

@@ -3,49 +3,52 @@ class UpdateStore {
 
   addItem(store) {
     let obj = { 
-      index   : store.items.length,
-      content : returnNewObj(store.brief) 
+      index : store['items'].length,
+      content : returnNewObj(store['brief']) 
     }
-
-    store.active  = parseFloat(obj.index);
-    store.items.push(obj);
+    store['active'] = parseFloat(obj['index']);
+    store['items'].push(obj);
     return store;
   }
 
   showItem(store) {
-    store.items.forEach((item, index) => {
-      item.status = (index === store.active) ? 'active' : '';
+    store['items'].forEach((item, index) => {
+      item['status'] = '';
+      if (index === store['active']) {
+        item['status'] = 'active';
+      }
     });
 
-    store.brief = returnNewObj(store.items[store.active]['content']);
+    let returnContent = store['items'][store.active]['content'];
+    store['brief'] = returnNewObj(returnContent);
     return store;
   }
 
   updateItem(store) {
     _createNewBrief(store);
-    if (store.items.length > 0 && store.items[store.active]) {
-      store.items[store.active].content = returnNewObj(store.brief);
+    if (store['items'].length > 0 && store['items'][store.active]) {
+      store['items'][store.active]['content'] = returnNewObj(store['brief']);
     } 
-
     return store;
   }
 
   removeItem(store) {
     let action = new Promise((resolve, reject) => {
-      store.items.splice(store.active, 1);
+      store['items'].splice(store['active'], 1);
 
-      if (store.items.length > 0) { 
-        store.items.forEach((item, index) => {
-          item.index = index;
+      if (store['items'].length > 0) { 
+        store['items'].forEach((item, index) => {
+          item['index'] = index;
         });
 
-        store.active = !store.items[store.active] ? store.active - 1 : store.active;
+        store['active'] = !store['items'][store.active] ? store['active'] - 1 : store['active'];
         store = this.showItem(store);
         resolve(store);
 
-      } else { reject(store); }
+      } else { 
+        reject(store); 
+      }
     });
-
     return action;
   }
 
@@ -83,14 +86,14 @@ class UpdateStore {
     $('#remove').hide();
     $('#favourites').show();
 
-    if (store.items.length > 0) {
-      store.items.forEach(item => {
-        item.status = '';
+    if (store['items'].length > 0) {
+      store['items'].forEach(item => {
+        item['status'] = '';
         
-        if (JSON.stringify(item.content) === JSON.stringify(store.brief)) {
+        if (JSON.stringify(item['content']) === JSON.stringify(store['brief'])) {
           $('#add').hide();
           $('#remove').show();
-          item.status = 'active';
+          item['status'] = 'active';
         } 
       });
     } else {
@@ -100,11 +103,11 @@ class UpdateStore {
 };
 
 function _createNewBrief(store) {
-  for(let property in store.builder) {
+  for(let property in store['builder']) {
     if (document.getElementById(property).type && document.getElementById(property).type.indexOf('select') > -1) {
-      store.brief[property] = $('#' + property).val();
+      store['brief'][property] = $('#' + property).val();
     } else {
-      store.brief[property] = $('#' + property).find('input[type=checkbox]').prop('checked');
+      store['brief'][property] = $('#' + property).find('input[type=checkbox]').prop('checked');
     }
   };
   return store;

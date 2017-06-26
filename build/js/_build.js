@@ -1,5 +1,17 @@
 
-class RandomizeCupcake {
+class Build {
+
+  generateContent(templateUrl, getCake, destination) {
+    let content = new Promise((resolve) => {
+      $.get(templateUrl, (template) => {
+        let rendered = Mustache.render(template, getCake);
+        destination.html(rendered)
+        resolve();
+      });
+    });
+
+    return content;
+  }
 
   createRandomCupcake(store) {
     if (store.builder) {
@@ -13,6 +25,7 @@ class RandomizeCupcake {
       }
 
       _isCupcakeTall(store.cupcake);
+      store.active = '';
       return store;
     }
   }
@@ -27,4 +40,4 @@ function _isCupcakeTall(cupcake) {
 	cupcake = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
 }
 
-module.exports = new RandomizeCupcake();
+module.exports = new Build();

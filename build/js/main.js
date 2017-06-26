@@ -1,14 +1,19 @@
-import Events from './pubsub.js';
-import Data from './resources.js';
-import Update from './updateStore.js';
-import RandomCupcake from './randomize.js';
+import Events from './_publishAndSubscribeToEvents.js';
+import Store from './_store.js';
+import Update from './_update.js';
+import Build from './_build.js';
 
 class GenerateCake {
 
   constructor(data) {
+    this.store             = data;
     this.$cake             = $('#cake');
     this.$control          = $('#controls');
-    this.store             = data;
+    this.$pages            = {
+      cake : 'template/cake.html',
+      edit : 'template/edit.html',
+      menu : 'template/menu.html'
+    }
   }
 
   init() {
@@ -22,8 +27,8 @@ class GenerateCake {
   }
 
   render(store) {
-    _generateCake('template/cake.html', store, this.$cake);
-    _checkIfCakeExists(store, this.$control);
+    Build.generateContent(this.$pages.cake, store, this.$cake);
+    Update.hasCakeBeenAddedToList(store);
   }
 
   bindUIevents(store) {
@@ -43,7 +48,8 @@ class GenerateCake {
         Events.emit('remove.cake.from.list', store); }
 
       else if (buttonId === 'toggle_menu') { 
-        _generateCake('template/favourites.html', store, this.$cake); 
+        this.togglePage(store, 'menu').then((resolve) => {
+        }, (error) => { });
       }
     });
 
@@ -60,14 +66,13 @@ class GenerateCake {
     });
 
     this.$cake.delegate('#icing_type', 'change', (button) => {
-      toggleOptional(store.cupcake.type);
+      Update.isCakeTall(store.cupcake.type);
     });
   };
 
   bindStoreEvents() {
     Events.on('create.random.cake', (store) => {
-      store.active = '';
-      this.render(RandomCupcake.createRandomCupcake(store));
+      this.render(Build.createRandomCupcake(store));
     });
 
     Events.on('add.random.cake', (store) => {
@@ -75,11 +80,10 @@ class GenerateCake {
     });
     
     Events.on('edit.cake.from.list', (store) => {
-      _generateCake('template/edit.html', store, this.$cake);
-      setTimeout(() => {
-        removeDuplicateOptions();
-        toggleOptional(store.cupcake.type);
-      },200);
+      this.togglePage(store, 'edit').then((resolve) => {
+        Update.selectedOptionsForEditPage(this.$cake);
+        Update.isCakeTall(store.cupcake.type);
+      }, (error) => { });
     });
 
     Events.on('remove.cake.from.list', (store) => {
@@ -95,90 +99,25 @@ class GenerateCake {
     });
 
     Events.on('update.current.cake', (store) => {
-      let updateStore = createNewCupcake(store);
-      this.render(Update.updateCakeInList(updateStore));
+      this.render(Update.updateCakeInList(store));
     });
+  }
+
+  togglePage(store, menuItem) {
+    let pageClass = this.$cake.attr('class');
+
+    let renderPage = new Promise((resolve, reject) => {
+      if (pageClass === menuItem) {
+        $('#cake').attr('class', '');
+        resolve(this.render(store));
+
+      } else {
+        $('#cake').attr('class', menuItem);
+        reject(Build.generateContent(this.$pages[menuItem], store, this.$cake)); 
+      }
+    });
+    return renderPage;
   }
 };
 
-let startApp = new GenerateCake(Data).init();
-
-function _generateCake(templateUrl, getCake, destination) {
-  $.get(templateUrl, (template) => {
-    let rendered = Mustache.render(template, getCake);
-    destination.html(rendered);
-  });
-}
-
-function _checkIfCakeExists(store, controls) {
-    controls.find('#add').show();
-    controls.find('#remove').hide();
-    controls.find('#toggle_menu').show();
-
-    if (store.cakes.length > 0) {
-      store.cakes.forEach(cake => {
-        cake.status = '';
-        
-        if (JSON.stringify(cake.cupcake) === JSON.stringify(store.cupcake)) {
-          controls.find('#add').hide();
-          controls.find('#remove').show();
-          cake.status = 'active';
-        } 
-      });
-    } else {
-      controls.find('#toggle_menu').hide();
-    }
-  }
-
-function toggleOptional(typeOfCupcake) {
-  if ($('#icing_type').val() === 'swirl') {
-    $('#hasCream')
-      .hide()
-      .find('input').prop('checked', false);
-    $('#hasWafer').show();
-    typeOfCupcake = "tall";
-
-  } else {
-    $('#hasCream').show();
-    $('#hasWafer')
-      .hide()
-      .find('input').prop('checked', false);
-    typeOfCupcake = "short";
-  }
-}
-
-function createNewCupcake(store) {
-  for(let property in store.builder) {
-    if (document.getElementById(property).type && document.getElementById(property).type.indexOf('select') > -1) {
-      store.cupcake[property] = $('#' + property).val();
-    } else {
-      store.cupcake[property] = $('#' + property).find('input[type=checkbox]').prop('checked');
-    }
-  };
-
-  return store;
-}
-
-function removeDuplicateOptions() {
-    
-  $('#cake select').each(function(){
-    let selectBox = $(this);
-    
-    selectBox.find('option').each(function() {
-      let duplicate = 0;
-      let option = $(this);
-
-      selectBox.find('option').each(function() {
-        if ($(this).text() === option.text()) {
-          duplicate++;
-          $(this).attr('value',$(this).text());
-
-          if (duplicate === 2) {
-            option.remove();
-            $(this).prop('selected',true);
-          }
-        }
-      });
-    });
-  });
-}
+let startApp = new GenerateCake(Store).init();

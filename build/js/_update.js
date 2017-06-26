@@ -27,6 +27,7 @@ class UpdateStore {
 
   updateCakeInList(store) {
     _createNewCupcake(store);
+
     if (store.cakes.length > 0 && store.cakes[store.active]) {
       let visibleCake = JSON.stringify(store.cupcake);
       let newIndex = parseFloat(store.active)

@@ -1,7 +1,7 @@
 <nav>
-{{ #cakes }}
+{{ #items }}
 	<button class="btn btn-primary {{ status }}" data-index="{{ index }}">
-		{{ #cupcake }}
+		{{ #content }}
 			<svg viewBox="0 0 450 600">
 
 				<use xlink:href="#svg_cake" class="svg__color--{{ flavour }}"></use>
@@ -27,11 +27,11 @@
 				{{ /hasCream }}
 				
 			</svg>
-		{{ /cupcake }}
+		{{ /content }}
 
 		{{ #status }}
 		 	&nbsp;<span class="glyphicon glyphicon-remove"></span>
 		{{ /status }}
 	</button>
-{{ /cakes }}
+{{ /items }}
 </nav>

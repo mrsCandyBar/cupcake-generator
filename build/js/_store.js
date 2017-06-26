@@ -2,8 +2,8 @@
 class Store {
 
   constructor() {
-    this.cakes    = [];
-    this.cupcake  = {};
+    this.items    = [];
+    this.brief     = {};
     this.active   = 0;
     this.builder  = {
       flavour: [ 

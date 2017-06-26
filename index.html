@@ -24,25 +24,27 @@
 
   <body>
   
-    <container class="vertical_centering">
+    <container>
 
       <main> 
-        <section id="cake"></section>
+        <section id="main"></section>
 
-        <sidebar id="controls">
-          <button id="toggle_menu"> Menu</button>
-          <button id="add">         Add to List</button>
+        <sidebar id="actions">
+          <button id="favourites">Favourites</button>
+          <button id="randomize">Randomize</button>
+          <button id="edit">Edit</button>
+          <button id="add">Add to List</button>
           <button id="remove" class="hidden">Remove from List</button>
-          <button id="randomize">   Randomize</button>
-          <button id="edit">        Edit</button>
         </sidebar>
 
-        <footer class="inner">
+        <footer>
           <p>Cupcake Generator by <a href="http://www.ckbar.co.za/"><img src="http://www.ckbar.co.za/logoV3.png" height="30px"></a></p>
         </footer>
       </main>
 
     </container>
+
+
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
@@ -51,6 +53,6 @@
     <script src="assets/js/main.js"></script>
 
     <!-- SVG holder -->
-    <div id="SVG_holder" class="hidden"></div>
+    <div id="SVG" class="hidden"></div>
   </body>
 </html>

@@ -7,36 +7,35 @@ class UpdateStore {
       cupcake : JSON.stringify(store.cupcake) 
     }
 
-    store.active = visibleCake.index;
+    store.active = parseFloat(visibleCake.index);
     visibleCake.cupcake = JSON.parse(visibleCake.cupcake);
     store.cakes.push(visibleCake);
     return store;
   }
 
   showCakeFromList(store) {
-    let listIndex = store.index;
+    let listIndex = store.active;
 
     store.cakes.forEach((cake, index) => {
       cake.status = (index === listIndex) ? 'active' : '';
     });
-    store.active = parseFloat(listIndex);
-    
+
     let getCake = JSON.stringify(store.cakes[listIndex]['cupcake']);
     store.cupcake = JSON.parse(getCake);
     return store;
   }
 
   updateCakeInList(store) {
-    console.log('store >>> inside', store)
-    if (!store.index == '') {
+    console.log('store >>', store, store.active);
+    if (store.cakes.length > 0 && store.cakes[store.active]) {
+
+      console.log('store >> 2', store);
 
       let visibleCake = JSON.stringify(store.cupcake);
-      let newIndex = parseFloat(store.index)
+      let newIndex = parseFloat(store.active)
 
       store.active = newIndex;
       store.cakes[newIndex].cupcake = JSON.parse(visibleCake);
-      
-      console.log('store >>> inside 2', store)
     } 
 
     return store;

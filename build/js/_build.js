@@ -24,7 +24,7 @@ class Build {
         store['brief'][property] = store['builder'][property][index];
       }
 
-      _isItemTall(store);
+      _checkOptionalValues(store);
       store['active'] = '';
       return store;
     }
@@ -35,19 +35,19 @@ function _randomNumber(obj) {
 	return Math.round(Math.random() * (obj.length - 1));
 }
 
-function _isItemTall(store) {
-
-  /*store['$dom']['optional'].forEach((obj) => {
-    let selected_option = (obj.selector === obj.selected_value) ? obj.change_state[0] : obj.change_state[1];
-    let checked_value =  (obj.selector === obj.selected_value) ? 'checked' : '';
-
-    let optionalSelector = document.getElementById(obj.affected_selector);
-    if (optionalSelector && optionalSelector.type) {
-      optionalSelector = selected_option;
+function _checkOptionalValues(store) {
+  store['$dom']['optional'].forEach((obj) => {
+    if (store['brief'][obj.selector] === obj.selected_value) {
+       
+      store['brief'][obj.affected_selector] = obj.change_state[0];
+      if (obj.change_state[0] === true) {
+        store['brief'][obj.affected_selector] = obj.change_state[_randomNumber(obj.change_state)];
+      }
+      
     } else {
-      $('#' + obj.affected_selector).find('input[type=checkbox]').prop(checked_value);
+      store['brief'][obj.affected_selector] = obj.change_state[1];
     }
-  });*/
+  });
 }
 
 module.exports = new Build();

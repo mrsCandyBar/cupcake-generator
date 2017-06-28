@@ -33,8 +33,7 @@ class ItemGenerator {
 
     Store['$dom']['actions']['edit'].on('click', () => {
       this._togglePage(store, 'edit').then((resolve) => {
-        Update.selectedOptions(Store['$dom']['main']);
-        Update.isItemTall(store);
+        Update.prepareEditPage(Store);
       }, (error) => { });
     });
 
@@ -56,10 +55,6 @@ class ItemGenerator {
         this._render(Update.showItem(store));
       }
     });
-
-    /*Store['$dom']['actions']['optional'][0]['property'].on('change', () => {
-      Update.isItemTall(store);
-    });*/
   };
 
   _render(store) {

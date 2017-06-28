@@ -22,7 +22,7 @@ class UpdateStore {
   }
 
   updateItem(store) {
-    this.isItemTall(store);
+    _createNewBrief(store);
     if (store['items'].length > 0 && store['items'][store.active]) {
       store['items'][store.active]['content'] = returnNewObj(store['brief']);
     } 
@@ -49,65 +49,69 @@ class UpdateStore {
     return action;
   }
 
-  selectedOptions(page) {
-    page.find('select').each((i, el) => {
-      $(el).find('option').each((i, el) => {
-        if ($(el).text() === $(el).attr('value')) {
-          $(el).prop('selected',true);
-        } else {
-          $(el).attr('value', $(el).text());
-        }
-      });
-    });
-  }
-
-  isItemTall(store) {
-
-    store['$dom']['optional'].forEach((obj) => {
-      let update_option;
-      let optionalSelector = document.getElementById(obj.affected_selector);
-
-      // SELECT
-      if (optionalSelector && optionalSelector.type) {
-        update_option = ($('#' +obj.selector).val() === obj.selected_value) ? obj.change_state[0] : obj.change_state[1];
-        
-        optionalSelector = $('#' +obj.affected_selector);
-        optionalSelector.val(update_option).change();
-
-      // RADIO
-      } else {
-        if ($('#' +obj.selector).val() != obj.selected_value) {
-          optionalSelector = $('#' +obj.affected_selector).find('input[type=checkbox]');
-           if( optionalSelector.is(':checked') ){
-             optionalSelector.prop('checked',false);
-           } 
-        }        
-      }
-    });
-
-    return _createNewBrief(store);
+  prepareEditPage(store) {
+    _watchItemsInDomForUpdates(store);
+    _setSelectedValuesFromBrief(store);
   }
 
   doesItemExist(store) {
-    $('#add').show();
-    $('#remove').hide();
-    $('#favourites').show();
+    store['$dom']['actions']['add'].show();
+    store['$dom']['actions']['remove'].hide();
+    store['$dom']['actions']['favourites'].show();
 
     if (store['items'].length > 0) {
       store['items'].forEach(item => {
         item['status'] = '';
         
         if (JSON.stringify(item['content']) === JSON.stringify(store['brief'])) {
-          $('#add').hide();
-          $('#remove').show();
+          store['$dom']['actions']['add'].hide();
+          store['$dom']['actions']['remove'].show();
           item['status'] = 'active';
         } 
       });
     } else {
-      $('#favourites').hide();
+      store['$dom']['actions']['favourites'].hide();
     }
   }
 };
+
+function _watchItemsInDomForUpdates(store) {
+    store['$dom']['optional'].forEach((obj) => {
+      $('#' +obj.selector).on('change', function() {
+
+        let selectCheck = document.getElementById(obj.affected_selector);
+        if (selectCheck && selectCheck.type) {
+
+          let index = ($(this).val() === obj.selected_value) ? 0 : 1;
+          $('#' +obj.affected_selector)
+            .val(obj.change_state[index])
+            .change();
+
+        } else {
+          if ($(this).val() != obj.selected_value) {
+            if ($('#' +obj.affected_selector+ ' input[type=checkbox]').is(':checked')) {
+              $('#' +obj.affected_selector+ ' input[type=checkbox]')
+                .prop('checked', false);
+            }
+          }
+        };
+
+      });
+    });
+  }
+
+function _setSelectedValuesFromBrief(store) {
+  store['$dom']['main'].find('select').each((i, select) => {
+    $(select).find('option').each((i, el) => {
+
+      if ($(el).text() === store['brief'][$(select)[0]['id']]) {
+        $(el).prop('selected',true).change();
+      } 
+      $(el).attr('value', $(el).text());
+
+    });
+  });
+}
 
 function _createNewBrief(store) {
   for(let property in store['builder']) {
@@ -117,7 +121,6 @@ function _createNewBrief(store) {
       store['brief'][property] = $('#' + property).find('input[type=checkbox]').prop('checked');
     }
   };
-  console.log('>>', store['brief']);
   return store;
 }
 

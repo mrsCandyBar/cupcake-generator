@@ -6,10 +6,9 @@ class Store {
     this.brief     = {};
     this.active   = 0;
     this.builder  = {
-      flavour: [ 
-        "vanilla", 
-        "caramel-darker", 
-        "chocolate-darker"
+      type: [
+        "tall",
+        "short"
       ],
       hasWafer: [
         "true", 
@@ -18,6 +17,11 @@ class Store {
       hasCream: [
         "true", 
         ""
+      ],
+      flavour: [ 
+        "vanilla", 
+        "caramel-darker", 
+        "chocolate-darker"
       ],
       holder_type: [
         "dotted", 
@@ -63,10 +67,6 @@ class Store {
         "candle", 
         "heart", 
         "flower" 
-      ],
-      type: [
-        "tall",
-        "short"
       ]
     }
   }

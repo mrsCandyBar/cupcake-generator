@@ -50,6 +50,10 @@
     {{ #builder.topping }}<option value="{{ brief.topping }}">{{ . }}</option>{{ /builder.topping }}
   </select>
 
+  <select id="type">
+    {{ #builder.type }}<option value="{{ brief.type }}">{{ . }}</option>{{ /builder.type }}
+  </select>
+
   <br>
   <button id="save">Save</button>
 </div>

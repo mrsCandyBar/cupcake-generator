@@ -16,28 +16,38 @@ class Build {
   randomItem(store) {
     if (store['builder']) {
       for(let property in store['builder']) {
-        let index = _getRandomNumberBetween(store['builder'][property]);
+        let index = _randomNumber(store['builder'][property]);
         
         if (store['brief'][property] === store['builder'][property][index]) {
-          index = _getRandomNumberBetween(store['builder'][property]);
+          index = _randomNumber(store['builder'][property]);
         }
         store['brief'][property] = store['builder'][property][index];
       }
 
-      _isItemTall(store['brief']);
+      _isItemTall(store);
       store['active'] = '';
       return store;
     }
   }
 }
 
-function _getRandomNumberBetween(obj) {
+function _randomNumber(obj) {
 	return Math.round(Math.random() * (obj.length - 1));
 }
 
-function _isItemTall(item) {
-	item.type  = item['icing_type'] === 'swirl' ? 'tall' : 'short';
-	item       = item['icing_type'] === 'swirl' ? item['hasCream'] = '' : item['hasWafer'] = '';
+function _isItemTall(store) {
+
+  /*store['$dom']['optional'].forEach((obj) => {
+    let selected_option = (obj.selector === obj.selected_value) ? obj.change_state[0] : obj.change_state[1];
+    let checked_value =  (obj.selector === obj.selected_value) ? 'checked' : '';
+
+    let optionalSelector = document.getElementById(obj.affected_selector);
+    if (optionalSelector && optionalSelector.type) {
+      optionalSelector = selected_option;
+    } else {
+      $('#' + obj.affected_selector).find('input[type=checkbox]').prop(checked_value);
+    }
+  });*/
 }
 
 module.exports = new Build();

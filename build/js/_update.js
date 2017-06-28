@@ -13,10 +13,7 @@ class UpdateStore {
 
   showItem(store) {
     store['items'].forEach((item, index) => {
-      item['status'] = '';
-      if (index === store['active']) {
-        item['status'] = 'active';
-      }
+      item['status'] = (index === store['active']) ? 'active' : '';
     });
 
     let returnContent = store['items'][store.active]['content'];
@@ -25,7 +22,7 @@ class UpdateStore {
   }
 
   updateItem(store) {
-    _createNewBrief(store);
+    this.isItemTall(store);
     if (store['items'].length > 0 && store['items'][store.active]) {
       store['items'][store.active]['content'] = returnNewObj(store['brief']);
     } 
@@ -53,32 +50,42 @@ class UpdateStore {
   }
 
   selectedOptions(page) {
-    page.find('select').each(function(){
-      $(this).find('option').each(function() {
-        if ($(this).text() === $(this).attr('value')) {
-          $(this).prop('selected',true);
+    page.find('select').each((i, el) => {
+      $(el).find('option').each((i, el) => {
+        if ($(el).text() === $(el).attr('value')) {
+          $(el).prop('selected',true);
         } else {
-          $(this).attr('value',$(this).text());
+          $(el).attr('value', $(el).text());
         }
       });
     });
   }
 
-  isItemTall(itemType) {
-    if ($('#icing_type').val() === 'swirl') {
-      $('#hasCream')
-        .hide()
-        .find('input').prop('checked', false);
-      $('#hasWafer').show();
-      itemType = "tall";
+  isItemTall(store) {
 
-    } else {
-      $('#hasCream').show();
-      $('#hasWafer')
-        .hide()
-        .find('input').prop('checked', false);
-      itemType = "short";
-    }
+    store['$dom']['optional'].forEach((obj) => {
+      let update_option;
+      let optionalSelector = document.getElementById(obj.affected_selector);
+
+      // SELECT
+      if (optionalSelector && optionalSelector.type) {
+        update_option = ($('#' +obj.selector).val() === obj.selected_value) ? obj.change_state[0] : obj.change_state[1];
+        
+        optionalSelector = $('#' +obj.affected_selector);
+        optionalSelector.val(update_option).change();
+
+      // RADIO
+      } else {
+        if ($('#' +obj.selector).val() != obj.selected_value) {
+          optionalSelector = $('#' +obj.affected_selector).find('input[type=checkbox]');
+           if( optionalSelector.is(':checked') ){
+             optionalSelector.prop('checked',false);
+           } 
+        }        
+      }
+    });
+
+    return _createNewBrief(store);
   }
 
   doesItemExist(store) {
@@ -110,6 +117,7 @@ function _createNewBrief(store) {
       store['brief'][property] = $('#' + property).find('input[type=checkbox]').prop('checked');
     }
   };
+  console.log('>>', store['brief']);
   return store;
 }
 

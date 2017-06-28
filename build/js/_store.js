@@ -12,12 +12,12 @@ class Store {
         "chocolate-darker"
       ],
       hasWafer: [
-        'true', 
-        ''
+        "true", 
+        ""
       ],
       hasCream: [
-        'true', 
-        ''
+        "true", 
+        ""
       ],
       holder_type: [
         "dotted", 
@@ -63,6 +63,10 @@ class Store {
         "candle", 
         "heart", 
         "flower" 
+      ],
+      type: [
+        "tall",
+        "short"
       ]
     }
   }

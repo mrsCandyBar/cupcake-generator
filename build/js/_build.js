@@ -1,43 +1,78 @@
 
 class Build {
 
-  generateContent(templateUrl, getCake, destination) {
+  content(templateUrl, store, destination) {
     let content = new Promise((resolve) => {
       $.get(templateUrl, (template) => {
-        let rendered = Mustache.render(template, getCake);
+        let rendered = Mustache.render(template, store);
         destination.html(rendered)
         resolve();
       });
-    });
 
+    });
     return content;
   }
 
-  createRandomCupcake(store) {
-    if (store.builder) {
-      for(let property in store.builder) {
-        let index = _getRandomNumberBetween(store.builder[property]);
+  randomItem(store) {
+    if (store['builder']) {
+      let builder = store['builder'];
+      let brief = store['brief'];
+
+      for(let property in builder) {
+        let index = _randomNumber(builder[property]);
         
-        if (store.cupcake[property] === store.builder[property][index]) {
-          index = _getRandomNumberBetween(store.builder[property]);
+        if (brief[property] === builder[property][index]) {
+          index = _randomNumber(builder[property]);
         }
-        store.cupcake[property] = store.builder[property][index];
+
+        brief[property] = builder[property][index];
       }
 
-      _isCupcakeTall(store.cupcake);
-      store.active = '';
+      _checkOptionalValues(store);
+      store['active'] = '';
       return store;
+    }
+  }
+
+  doesItemExist(store, actions) {
+    actions['add'].show();
+    actions['remove'].hide();
+    actions['favourites'].show();
+
+    if (store['items'].length > 0) {
+      store['items'].forEach(item => {
+        item['status'] = '';
+        
+        if (JSON.stringify(item['content']) === JSON.stringify(store['brief'])) {
+          actions['add'].hide();
+          actions['remove'].show();
+          item['status'] = 'active';
+        } 
+      });
+
+    } else {
+      actions['favourites'].hide();
     }
   }
 }
 
-function _getRandomNumberBetween(obj) {
+function _randomNumber(obj) {
 	return Math.round(Math.random() * (obj.length - 1));
 }
 
-function _isCupcakeTall(cupcake) {
-	cupcake.type = cupcake['icing_type'] === 'swirl' ? 'tall' : 'short';
-	cupcake = cupcake['icing_type'] === 'swirl' ? cupcake.hasCream = '' : cupcake.hasWafer = '';
+function _checkOptionalValues(store) {
+  store['$dom']['optional'].forEach((obj) => {
+    if (store['brief'][obj.selector] === obj.selected_value) {
+       
+      store['brief'][obj.affected_selector] = obj.change_state[0];
+      if (obj.change_state[0] === true) {
+        store['brief'][obj.affected_selector] = obj.change_state[_randomNumber(obj.change_state)];
+      }
+      
+    } else {
+      store['brief'][obj.affected_selector] = obj.change_state[1];
+    }
+  });
 }
 
 module.exports = new Build();

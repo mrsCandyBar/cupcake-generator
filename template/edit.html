@@ -7,33 +7,37 @@
   <!-- selected disabled -->
 
 	<select id="flavour">
-    {{ #builder.flavour }}<option value="{{ cupcake.flavour }}">{{ . }}</option>{{ /builder.flavour }}
+    {{ #builder.flavour }}<option>{{ . }}</option>{{ /builder.flavour }}
   </select>
 
   <select id="holder_type">
-    {{ #builder.holder_type }}<option value="{{ cupcake.holder_type }}">{{ . }}</option>{{ /builder.holder_type }}
+    {{ #builder.holder_type }}<option>{{ . }}</option>{{ /builder.holder_type }}
   </select>
 
   <select id="holder_colour">
-    {{ #builder.holder_colour }}<option value="{{ cupcake.holder_colour }}">{{ . }}</option>{{ /builder.holder_colour }}
+    {{ #builder.holder_colour }}<option>{{ . }}</option>{{ /builder.holder_colour }}
   </select>
   
   ---
 
+  <select id="type" class="hidden">
+    {{ #builder.type }}<option>{{ . }}</option>{{ /builder.type }}
+  </select>
+
   <select id="icing_type">
-    {{ #builder.icing_type }}<option value="{{ cupcake.icing_type }}">{{ . }}</option>{{ /builder.icing_type }}
+    {{ #builder.icing_type }}<option>{{ . }}</option>{{ /builder.icing_type }}
   </select>
 
   <select id="icing_colour">
-    {{ #builder.icing_colour }}<option value="{{ cupcake.icing_colour }}">{{ . }}</option>{{ /builder.icing_colour }}
+    {{ #builder.icing_colour }}<option>{{ . }}</option>{{ /builder.icing_colour }}
   </select>
 
   <select id="sprinkles_type">
-    {{ #builder.sprinkles_type }}<option value="{{ cupcake.sprinkles_type }}">{{ . }}</option>{{ /builder.sprinkles_type }}
+    {{ #builder.sprinkles_type }}<option>{{ . }}</option>{{ /builder.sprinkles_type }}
   </select>
 
   <select id="sprinkles_colour">
-    {{ #builder.sprinkles_colour }}<option value="{{ cupcake.sprinkles_colour }}">{{ . }}</option>{{ /builder.sprinkles_colour }}
+    {{ #builder.sprinkles_colour }}<option>{{ . }}</option>{{ /builder.sprinkles_colour }}
   </select>
 
   --- <br>
@@ -41,13 +45,13 @@
   Optional :
   
   <span id="hasWafer" style="display: none;">
-    <input type="checkbox" name="wafer" value="true" {{ #cupcake.hasWafer }}checked="true"{{ /cupcake.hasWafer }}>Add Wafer
+    <input type="checkbox" name="wafer" value="true" {{ #brief.hasWafer }}checked="true"{{ /brief.hasWafer }}>Add Wafer
   </span>
   
-  <span id="hasCream"><input type="checkbox" name="cream" value="true" {{ #cupcake.hasCream }}checked="true"{{ /cupcake.hasCream }}>Add Cream</span>
+  <span id="hasCream"><input type="checkbox" name="cream" value="true" {{ #brief.hasCream }}checked="true"{{ /brief.hasCream }}>Add Cream</span>
 
   <select id="topping">
-    {{ #builder.topping }}<option value="{{ cupcake.topping }}">{{ . }}</option>{{ /builder.topping }}
+    {{ #builder.topping }}<option>{{ . }}</option>{{ /builder.topping }}
   </select>
 
   <br>

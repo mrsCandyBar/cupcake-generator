@@ -1,95 +1,97 @@
-import Events from  './_publishAndSubscribeToEvents.js';
-import Store from   './_store.js';
+import Store  from  './_store.js';
+import Build  from  './_build.js';
 import Update from  './_update.js';
-import Build from   './_build.js';
+import Edit   from  './_edit.js';
 
-class GenerateCake {
+class ItemGenerator {
 
   constructor() {
-    this.$cake             = $('#cake');
-    this.$control          = $('#controls');
-    this.$pages            = {
-      cake : 'template/cake.html',
-      edit : 'template/edit.html',
-      menu : 'template/menu.html'
-    }
+    this.store    = Store;
+    this.$pages   = this.store['templates'];
+    this.container = this.store['$dom']['main'],
+    this.actions   = this.store['$dom']['actions']
   }
 
   init() {
-    $.get('getSVG.html', function (data) {
-      $('#SVG_holder').append(data);
-    });
-
-    this.bindUIevents(Store);
-    this.$control.find('#randomize').trigger('click');
+    this.createActions(this.store);
   }
 
-  render(store) {
-    Build.generateContent(this.$pages.cake, store, this.$cake);
-    Update.hasCakeBeenAddedToList(store);
+  createActions(store) {
+
+    Build.content(this.$pages.actions, store, this.actions)
+      .then((response) => {
+        this.actions = {
+          randomize   : this.actions.find('#randomize'),
+          add         : this.actions.find('#add'),
+          remove      : this.actions.find('#remove'),
+          favourites  : this.actions.find('#favourites'),
+          edit        : this.actions.find('#edit')
+        }
+
+        this.bindUIevents(store);
+        this.actions['randomize'].trigger('click');
+    });
   }
 
   bindUIevents(store) {
-    this.$control.delegate('button', 'click', (button) => {
-      let buttonId = button.currentTarget.id;
-
-      if (buttonId === 'randomize') {
-        this.render(Build.createRandomCupcake(store)); 
-      }
-
-      else if (buttonId === 'add') {
-        this.render(Update.addCakeToList(store));
-      }
-
-      else if (buttonId === 'edit') {
-        this.togglePage(store, 'edit').then((resolve) => {
-          Update.selectedOptionsForEditPage(this.$cake);
-          Update.isCakeTall(store.cupcake.type);
-        }, (error) => { });
-      }
-
-      else if (buttonId === 'remove') {
-        Update.removeCakeFromList(store).then((updateStore) => {
-          this.render(updateStore);
-        }, (emptyStore) => {
-          this.render(Build.createRandomCupcake(store)); 
-        });
-      }
-
-      else if (buttonId === 'toggle_menu') { 
-        this.togglePage(store, 'menu').then((resolve) => {
-        }, (error) => { });
-      }
+    
+    this.actions['randomize'].on('click', () => {
+      this._render(Build.randomItem(store)); 
     });
 
-    this.$cake.delegate('button', 'click', (button) => {
-      let buttonId = button.currentTarget.id;
+    this.actions['add'].on('click', () => {
+      this._render(Update.addItem(store)); 
+    });
 
-      if (buttonId === 'save') {
-        this.render(Update.updateCakeInList(store));
+    this.actions['favourites'].on('click', () => {
+      this._togglePage(store, 'favourites').then((resolve) => {}, (error) => {});
+    });
 
-      } else {
+    this.actions['edit'].on('click', () => {
+      this._togglePage(store, 'edit').then((resolve) => {
+        Edit.prepareEditPage(store);
+      }, (error) => { });
+    });
+
+    this.actions['remove'].on('click', () => {
+      Update.removeItem(store).then((updateStore) => {
+        this._render(updateStore);
+      }, (emptyStore) => {
+        this._render(Build.randomItem(store)); 
+      });
+    });
+
+    this.container.delegate('button', 'click', (button) => {
+      let action = button.currentTarget.id;
+      if (action === 'save') {
+        this._render(Update.updateItem(store));
+      } 
+      else {
         store.active = button.currentTarget.dataset.index;
-        this.render(Update.showCakeFromList(store));
+        this._render(Update.showItem(store));
       }
-    });
-
-    this.$cake.delegate('#icing_type', 'change', (button) => {
-      Update.isCakeTall(store.cupcake.type);
     });
   };
 
-  togglePage(store, menuItem) {
-    let pageClass = this.$cake.attr('class');
+  _render(store) {
+
+    this._togglePage(store, 'main').then((resolve) => {
+      Build.doesItemExist(store, this.actions);
+    }, (error) => {});
+
+  }
+
+  _togglePage(store, menuItem) {
+    let pageClass = this.container.attr('class');
     let renderPage = new Promise((resolve, reject) => {
 
-      if (pageClass === menuItem) {
-        $('#cake').attr('class', '');
-        reject(this.render(store));
+      if (pageClass === menuItem && pageClass != 'main') {
+        this.container.attr('class', '');
+        reject(Build.content(this.$pages.main, store, this.container));
 
       } else {
-        $('#cake').attr('class', menuItem);
-        resolve(Build.generateContent(this.$pages[menuItem], store, this.$cake)); 
+        this.container.attr('class', menuItem);
+        resolve(Build.content(this.$pages[menuItem], store, this.container)); 
       }
     });
 
@@ -97,4 +99,8 @@ class GenerateCake {
   }
 };
 
-let startApp = new GenerateCake().init();
+$.get('SVG.html', function (data) {
+  $('#SVG').append(data);
+});
+
+let startApp = new ItemGenerator().init();

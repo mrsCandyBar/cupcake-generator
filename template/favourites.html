@@ -1,0 +1,37 @@
+<nav>
+{{ #items }}
+	<button class="btn btn-primary {{ status }}" data-index="{{ index }}">
+		{{ #content }}
+			<svg viewBox="0 0 450 600">
+
+				<use xlink:href="#svg_cake" class="svg__color--{{ flavour }}"></use>
+
+				<use xlink:href="#svg_holder_{{ holder_type }}" class="svg__color--{{ holder_colour }}"></use>
+
+				{{ #hasWafer }}
+					<use xlink:href="#svg_wafers"></use>
+				{{ /hasWafer }}
+				
+				<use xlink:href="#svg_muffin_top_{{ icing_type }}" class="svg__color--{{ icing_colour }}"></use>
+				
+				<use xlink:href="#svg_{{ type }}_{{ sprinkles_type }}" class="svg__color--{{ sprinkles_colour }}"></use>
+
+				{{ #hasCream }}
+					<use xlink:href="#svg_icing_background"></use>
+				{{ /hasCream }}
+				
+				<use xlink:href="#svg_{{ type }}_{{ topping }}" class="svg__color--{{ icing_colour }}"></use>
+
+				{{ #hasCream }}
+					<use xlink:href="#svg_icing_foreground" class="svg__color--{{ icing_colour }}"></use>
+				{{ /hasCream }}
+				
+			</svg>
+		{{ /content }}
+
+		{{ #status }}
+		 	&nbsp;<span class="glyphicon glyphicon-remove"></span>
+		{{ /status }}
+	</button>
+{{ /items }}
+</nav>

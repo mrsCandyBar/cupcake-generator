@@ -41,7 +41,7 @@ $windowWidthMin: 320px;
 $windowHeightMin: 480px;
 
 // Backgrounds
-$BGprimary: #333;
+$BGprimary: #222;
 $BGsecondary: #000;
 
 
@@ -63,10 +63,13 @@ body * {
 img { vertical-align: middle; padding-left: 5px; }
 
 button { 
-  background: map-get($colors, red); 
+  /* background: map-get($colors, red); 
   color: map-get($colors, cream-darker); 
   padding: 10px 20px; 
-  border-radius: 4px; 
+  border-radius: 4px;  */
+
+  background: none;
+  color: #fff;
   border: none;
   margin: 5px 1px; /* 0px 0px 10px -5px */
 }
@@ -75,3 +78,4 @@ button {
 *::selection { background: none; }
 *:focus { outline: none; }
 .hidden { display: none; }
+.disabled { opacity: 0.3; }

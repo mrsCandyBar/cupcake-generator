@@ -44,13 +44,22 @@ class ItemGenerator {
     });
 
     this.actions['favourites'].on('click', () => {
-      this._togglePage(store, 'favourites').then((resolve) => {}, (error) => {});
+      if (!this.actions['favourites'].hasClass('disabled')) {
+          this._togglePage(store, 'favourites').then((resolve) => {
+          this._isActiveTab('favourites', this.actions, 'add');
+        }, (error) => {
+          this._isActiveTab('favourites', this.actions, 'remove');
+        });
+      }
     });
 
     this.actions['edit'].on('click', () => {
       this._togglePage(store, 'edit').then((resolve) => {
+        this._isActiveTab('edit', this.actions, 'add');
         Edit.prepareEditPage(store);
-      }, (error) => { });
+      }, (error) => { 
+        this._isActiveTab('edit', this.actions, 'remove');
+      });
     });
 
     this.actions['remove'].on('click', () => {
@@ -96,6 +105,16 @@ class ItemGenerator {
     });
 
     return renderPage;
+  }
+
+  _isActiveTab(thisButton, buttonList, state) {
+    Object.keys(buttonList).forEach((button, i) => {
+      $('#' +button).removeAttr('class');
+
+      if (button === thisButton && state === "add") {
+        $('#' +button).addClass('active');
+      }
+    });
   }
 };
 

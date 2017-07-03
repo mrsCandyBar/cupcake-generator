@@ -1,22 +1,38 @@
 
 #actions {
-  position: fixed;
-  top: 0px;
+  position: absolute;
+  top: 10px;
   left: 0px;
-  right: 0px;
-}
 
-/* @media screen and (min-aspect-ratio: 450/600) { 
-  #controls { 
-    width: calc((100vh - 80px) * (450/600));
-    height: calc(100vh - 80px);
+  button {
+    padding: 10px 10px 6px 30px;
+    margin-left: -20px;
+    border: 2px solid transparent;
+    display: block;
+
+    span {
+      font-size: 30px;
+    }
+  }
+
+  #ambience {
+    background: none;
+    width: auto; height: auto;
+    position: fixed;
+    bottom: 5px; right: 5px;
+  }
+
+  #add span {
+    transform         : rotate(45deg);
+    -moz-transform    : rotate(45deg);
+    -ms-transform     : rotate(45deg);
+    -webkit-transform : rotate(45deg);
+    display: block;
+  }
+
+  .active { 
+    background: #fff;
+    border-color: #fff;
+    color: #222;
   }
 }
-
-@media screen and (max-aspect-ratio: 450/600) { 
-  #controls { 
-    width: 80vw;
-    height: calc(80vw / (450/600));
-    margin-top: calc(((100vh - 80px) - (80vw / (450/600))) / 2);
-  }
-} */

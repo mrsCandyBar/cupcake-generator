@@ -35,14 +35,16 @@ class Build {
   }
 
   doesItemExist(store, actions) {
+
     actions['add'].show();
     actions['remove'].hide();
-    actions['favourites'].show();
+    actions['favourites'].removeAttr('class');
+    actions['edit'].removeAttr('class');
 
     if (store['items'].length > 0) {
       store['items'].forEach(item => {
         item['status'] = '';
-        
+       
         if (JSON.stringify(item['content']) === JSON.stringify(store['brief'])) {
           actions['add'].hide();
           actions['remove'].show();
@@ -51,7 +53,7 @@ class Build {
       });
 
     } else {
-      actions['favourites'].hide();
+      actions['favourites'].addClass('disabled');
     }
   }
 }

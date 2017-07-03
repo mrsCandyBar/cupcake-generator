@@ -1,6 +1,27 @@
 
+h2 {
+	font-size: 40px;
+	color: #fff;
+}
 
 select { 
 	display: block;
 	margin: 5px auto;
+	width: 200px;
+	border: 2px solid #111;
+	background: 000;
+	border-radius: 5px;
+	color: #ccc;
+
+	option {
+		background: #000;
+	}
+}
+
+#save {
+	width: 200px;
+	border: 2px solid #fff;
+	background: #fff;
+	border-radius: 5px;
+	color: #222;
 }

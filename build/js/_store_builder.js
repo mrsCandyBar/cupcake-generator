@@ -44,8 +44,7 @@ class BuildOptions {
       "yellow", 
       "pink", 
       "brown", 
-      "green",
-      "svg__darker"
+      "green"
     ],
     
     this.sprinkles_type = [ 

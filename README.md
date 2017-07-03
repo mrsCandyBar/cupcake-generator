@@ -1,5 +1,5 @@
 # dev_template_example
-Cupcake generator example made from the dev templates
+<a href="http://www.ckbar.co.za/dev_template/">Cupcake generator example</a> made from the dev templates
 
 Generator is able to :<br>
 	- Randomize Cupcake from builder options<br>
